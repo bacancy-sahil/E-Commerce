@@ -1,5 +1,5 @@
 class User1sController < ApplicationController
-  before_action :authenticate_user! ,only:[:new,:create]
+  before_action :authenticate_user! ,only:[:new,:create,:cart]
   def new
     @user =User.new
     @brand = @user.build_brand
@@ -25,10 +25,17 @@ class User1sController < ApplicationController
 
   def AddToCart 
     productId=params[:productId];
-    
-
+    @cart=Cart.new
+    @cart.user_id = current_user.id
+    @cart.product_id = params[:productId]
+    @cart.quentity = 1
+    @cart.save
+    redirect_to :action => "cart"
   end
 
+  def cart
+    @cart = Cart.where(["user_id= ?", current_user.id])
+  end
 
   def home
     @category = Category.where(status:true)

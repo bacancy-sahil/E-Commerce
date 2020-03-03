@@ -1,24 +1,28 @@
 <div class="container">
   <div style=" display: grid; grid-template-columns: auto auto auto;padding: 10px;">
-  <%for p in @product.each do%>
-  <div class="grid-item">
-    <div class="col-md-4">
-      <div class="card" style="width: 18rem;">
-        <%= image_tag(p.image1,:class=>'card-img-top') if p.image1.attached?%>
-        <div class="card-body">
-          <h5 class="card-title"><%=p.name%></h5>
-          <h6 class="card-subtitle mb-2 text-muted"><%=p.brand.name%></h6>
-          <p class="card-text"><%=p.description%></p>
-          <p class="card-text"><%=p.price%></p>
+    <%for p in @product.each do%>
+    <div class="grid-item">
+      <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+          <%= image_tag(p.image1,:class=>'card-img-top') if p.image1.attached?%>
+          <div class="card-body">
+            <h5 class="card-title"><%=p.name%></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%=p.brand.name%></h6>
+            <p class="card-text"><%=p.description%></p>
+            <p class="card-text"><%=p.price%></p>
             <%if user_signed_in? %>
-          <div class="center"><a href="/user1s/AddToCart?productId=<%=p.id%>" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
-          <%else%>
-            <div class="center"><a href="/users/sign_in" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
-          <%end%>
+              <%if Cart.where(["user_id= ?,product_id= ?", current_user.id,p.id])%>
+                <div class="center"><a href="/user1s/cart" class="btn btn-primary" style="margin-left: 50px;">Go To Cart</a></div>
+              <%else%>
+                <div class="center"><a href="/user1s/AddToCart?productId=<%=p.id%>" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
+              <%end%>
+              <%else%>
+              <div class="center"><a href="/users/sign_in" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
+            <%end%>
+          </div>
         </div>
       </div>
     </div>
+    <%end%>
   </div>
-  <%end%>
-</div>
 </div>

@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   get 'brands/subscription' =>  "brands#subscription" ,as: :brands_subscription
   get 'products/get_sub_category' =>  "products#get_sub_category"
   get 'user1s/AddToCart'
-
+  get 'user1s/cart'
+  
   root "user1s#home" ,as: :user1s_home
   resources :news_letters
   resources :comments
