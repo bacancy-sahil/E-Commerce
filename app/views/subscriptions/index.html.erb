@@ -1,0 +1,44 @@
+<%if current_user%>
+<%if current_user.has_role? :admin%>
+
+<p id="notice"><%= notice %></p>
+
+<h1> All Subscriptions</h1>
+<table class="table table-dark" style="text-align: center;">
+  <thead>
+    <tr>
+      <th scope="col"> Description</th>
+      <th scope="col"> Price </th>
+      <th scope="col">Number Of Products </th>
+      <th scope="col">Duration(in Months)</th>
+      <th scope="col">Status</th>
+      <th scope="col" colspan="2">Manage Subscription</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subscription.each do |subscription| %>
+    <tr>
+      <td><%= subscription.description %></td>
+      <td><%= subscription.price %></td>
+      <td><%= subscription.numberofproducts %></td>
+      <td><%= subscription.duration %></td>
+      <%if subscription.status==true ; status="Active";elsif(subscription.status==false);status="InActive";else status="";end%>
+      <td><%= status %></td>
+      <td><%= link_to 'Edit', edit_subscription_path(subscription),:class => 'btn btn-sm btn-outline-success' %></td>
+      <td><%= button_to 'Destroy',subscription_path(subscription), method: :delete, data: { confirm: 'Are you sure?'},:class => 'btn btn-outline-danger btn-sm'  %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</table>
+
+<br>
+
+<%= link_to 'New Subscription', new_subscription_path ,:class =>'btn btn btn-success'%>
+
+<%end%>
+<%else%>  
+<%=render file: 'public/404'%>
+<%end%>

@@ -1,0 +1,38 @@
+<%if current_user%>
+<%if current_user.has_role? :admin%>
+
+
+<p>
+  <strong>Description:</strong>
+  <%= @subscription.description %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @subscription.price %>
+</p>
+
+<p>
+  <strong>Number Of Products:</strong>
+  <%= @subscription.numberofproducts   %>
+</p>
+<p>
+  <strong>Duration:</strong>
+  <%= @subscription.duration   %>
+</p>
+<p>
+  <div class="field">
+    <strong>Status:</strong>
+    <%= form_tag do |form|%>
+    <%= check_box_tag(:status, @subscription.status,@subscription.status) %>
+    <%= label_tag(:status) %>
+    <%end%>
+  </div>
+</p>
+
+<%= link_to 'Edit', edit_subscription_path(@subscription) %> ||
+<%= link_to 'Back', subscriptions_path %>
+<%end%>
+<%else%>  
+<%=render file: 'public/404'%>
+<%end%>

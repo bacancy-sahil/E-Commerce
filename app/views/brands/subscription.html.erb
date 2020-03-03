@@ -1,0 +1,49 @@
+<%if current_user%>
+<%if current_user.has_role? :brand%>
+
+<% if @user.errors.any? %>
+<h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+<ul>
+  <% @user.errors.full_messages.each do |message| %>
+  <li><%= message %></li>
+  <% end %>
+</ul>
+<% end %>
+<%a=current_user.id%>
+<% @brand = Brand.joins(:user).select('users.*, brands.*').where(user_id: a) %>
+<h1>Your Subscriptions</h1>
+<table  class="table table-dark" style="text-align: center;">
+  <thead>
+    <tr>
+      <th scope="col">Brand Name</th>
+      <th scope="col">Subscription</th>
+      <th scope="col">Starting Date</th>
+      <th scope="col">Ending Date</th>
+      <th scope="col">Status</th>  
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @brand.each do |brand| %>
+    <tr>
+      <td><%= brand.name %></td>
+      <td><%= brand.subscription.description %></td>
+      <td><%= brand.startingdate %></td>
+      <td><%= brand.endingdate %></td>
+      <%if brand.status==0 ; status="Pendding";elsif(brand.status==1);status="running";elsif(brand.status==2);status="DeActivated";else status="";end%>
+      <td><%= status %></td>  
+      
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</table>
+
+<br>
+
+<%end%>
+<%else%>  
+<%=render file: 'public/404'%>
+<%end%>
