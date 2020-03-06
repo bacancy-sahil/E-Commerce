@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :sub_category
   belongs_to :brand
-  has_many :comments ,dependent: :destroy
+  has_one :comment 
   # has_many :products ,dependent: :destroy
+  has_one :mappingtable
 end

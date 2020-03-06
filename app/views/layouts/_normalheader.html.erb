@@ -18,7 +18,7 @@
         <%@subCategory =SubCategory.where(["category_id= ? and status = ?", c.id, true]) %>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <% for s in @subCategory.each do%>
-          <a class="dropdown-item" href="#"><%=s.name%></a> 
+          <a class="dropdown-item" href="/user1s/subCategory?id=<%=s.id%>"><%=s.name%></a> 
           <div class="dropdown-divider"></div>
           <%end%>
         </div>
@@ -27,13 +27,14 @@
     <% end %>
       <li class="nav-item active">
        <%if user_signed_in? %>
-       <%= button_to('Logout', destroy_user_session_path, method: :delete,:class=>"nav-link") %>
+       <%= button_to('Logout', destroy_user_session_path, method: :delete,:class=>"btn btn-danger btn-lg pull-right") %>
        <%else%>
-       <%= link_to('Log-In', user_session_path,:class=>"nav-link") %> 
+       <%= link_to('Log-In', user_session_path,:class=>"btn btn-success btn-lg pull-right") %> 
        <%end%>
      </li>
    </ul>
    <form class="form-inline my-2 my-lg-0">
+
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
   </form>

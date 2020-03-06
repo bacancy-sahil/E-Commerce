@@ -9,11 +9,11 @@ class User < ApplicationRecord
    rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-
-  has_many :comments
+  has_one :like
+  has_one :comment
   has_one :cart
   has_one :brand
-
+  has_one :mappingtable
   accepts_nested_attributes_for :brand
 
   after_create :create_account

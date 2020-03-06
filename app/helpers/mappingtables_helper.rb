@@ -1,0 +1,2 @@
+module MappingtablesHelper
+end
