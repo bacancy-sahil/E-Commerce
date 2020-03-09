@@ -2,8 +2,7 @@
 <%if current_user.has_role? :admin%>
 
 
-<%= form_with model: @user do |user_form| %>
-<!-- , :url => {:controller=>"users_controller",:action=>"create"}, :html => { :method => "POST" } -->
+<%= form_with model: @user, url: client_create_path, :html => {:method => :post} do |user_form| %>
 <div class="form-group row">
   <%= user_form.label :email,:class=>'col-sm-4' %>
   <%= user_form.text_field :email ,:class=>'col-sm-8'%>
@@ -13,7 +12,6 @@
   <%= user_form.label :password,:class=>'col-sm-4' %>
   <%= user_form.password_field :password ,:class=>'col-sm-8'%>
 </div>
-
 
 <%= user_form.fields_for @user.build_brand do |form| %>
 

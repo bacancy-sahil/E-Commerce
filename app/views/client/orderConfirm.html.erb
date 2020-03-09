@@ -1,11 +1,6 @@
-
-
-
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 <script src="https://use.fontawesome.com/c560c025cf.js"></script>
 <div class="container">
 
@@ -15,21 +10,20 @@
   <div class="card shopping-cart">
     <div class="card-header bg-dark text-light">
       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-      Shipping cart
-      <a href="/" class="btn btn-outline-info btn-sm pull-right">Continue shopping</a>
+      Your Order Confirmed
       <div class="clearfix"></div>
     </div>
     <div class="card-body">
       <!-- PRODUCT -->
       <%for c in @cart.each do%>
       <div class="row">
-        <div class="col-12 col-sm-12 col-md-2 text-center">
+        <div classs="col-12 col-sm-12 col-md-2 text-center">
          <%= image_tag(c.product.image1,:class=>'img-responsive',height: '80', width: '120') if c.product.image1.attached?%>
 
 
        </div>
        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
-        <a href="/user1s/product?id=<%=c.product.id%>" style="color: black;text-decoration: none;"><h4 class="product-name"><strong><%=c.product.name%></strong></h4>
+        <a href="/client/product?id=<%=c.product.id%>" style="color: black;text-decoration: none;"><h4 class="product-name"><strong><%=c.product.name%></strong></h4>
         <h4></a>
           <small><%=c.product.description%></small>
         </h4>
@@ -40,7 +34,7 @@
         </div>
         <input id="productId" name="productId" class="productId" type="hidden" value="<%=c.product.id%>" >
         <div class="quantity">
-          <input type="number" step="1" max="5" min="1" value="<%=c.quentity%>" style="width:50px;" title="Qty" class="qty">
+          <label><%=c.quentity%></label>
         </div>
         <div class="col-4 col-sm-4 col-md-4">
           <div >
@@ -48,12 +42,8 @@
             <label class="totalPrice"><%=q%></label>
           </div>
         </div>
-        <!-- :location=>'user1s/deleteCart?cartId='c.id -->
-        <div class="col-2 col-sm-2 col-md-2 text-right">
-          <%= button_to 'Delete',user1s_deleteCart_path(:id=>c) , data: { confirm: 'Are you sure?'},:class => 'btn btn-outline-danger btn-xs' %>
-          <!-- <button type="button" class="btn btn-outline-danger btn-xs">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </button> -->
+        <!-- :location=>'client/deleteCart?cartId='c.id -->
+      
         </div>
       </div>
     </div>
@@ -77,7 +67,7 @@
   <div class="pull-right" style="margin: 10px">
     <a href="checkout" class="btn btn-success pull-right">Checkout</a>
     <div class="pull-right" style="margin: 5px">
-      Total price: <b id="mailTotal"></b>
+      Total Order Price: <b id="mailTotal"></b>
     </div>
   </div>
 </div>
@@ -89,53 +79,11 @@
 
 <script>
  $(document).ready(function () {
+  alert("i am called1");
    getTotal();
-   $('.qty').on('change', function() {
-    var quentity = $(".qty").val();
-    var productId = $(this).closest(".row").find(".productId").val();
-    var price = $(this).closest(".row").find("strong").text();
-    var totalPrice = quentity * price;
-    $(this).closest(".row").find(".totalPrice").text(totalPrice);
-
-    var url="/user1s/updateCartValue";
-    $.ajax({
-      type : "get",
-      url : url,
-      data : {"productId":productId,"quentity":quentity},
-      datatype: 'script',
-      async: false,
-      success : function(data){
-       alert("Hii");
-     }  
-   });
-
-
-    alert(productId);
-    alert(quentity);
-    alert(price);
-    alert(totalPrice);
-    getTotal();
-  });
-
- //   $(".qty").off('change').on("change",function(){
- //    alert("hii");
- //   //    var quentity = $(".qty").val();
- //   //    var productId = $(this).closest(".row").find(".productId").val();
- //   var url="/user1s/updateCartValue";
- //   $.ajax({
- //    type : "POST",
- //    url : url,
- //    data : {"productId":productId,"quentity":quentity},
- //    datatype: 'script',
- //    async: false,
- //    success : function(data){
- //     alert("Hii");
- //   }
- // });
-});
-
 
  function getTotal(){
+  alert("i am called");
   var total = 0;
   $('.totalPrice').each(function(){
     total += parseFloat(this.innerHTML);
@@ -144,6 +92,6 @@
     // console.log(total);
     $('#mailTotal').text(total);
   }
-
+});
 
 </script>

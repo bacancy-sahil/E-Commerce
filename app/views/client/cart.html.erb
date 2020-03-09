@@ -1,0 +1,147 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<script src="https://use.fontawesome.com/c560c025cf.js"></script>
+<div class="container">
+
+  <% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %> text-danger"><%= value %></div>
+  <% end %>
+  <div class="card shopping-cart">
+    <div class="card-header bg-dark text-light">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      Shipping cart
+      <a href="/" class="btn btn-outline-info btn-sm pull-right">Continue shopping</a>
+      <div class="clearfix"></div>
+    </div>
+    <div class="card-body">
+      <!-- PRODUCT -->
+      <%for c in @cart.each do%>
+      <div class="row">
+        <div classs="col-12 col-sm-12 col-md-2 text-center">
+         <%= image_tag(c.product.image1,:class=>'img-responsive',height: '80', width: '120') if c.product.image1.attached?%>
+
+
+       </div>
+       <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
+        <a href="/client/product?id=<%=c.product.id%>" style="color: black;text-decoration: none;"><h4 class="product-name"><strong><%=c.product.name%></strong></h4>
+        <h4></a>
+          <small><%=c.product.description%></small>
+        </h4>
+        <p>You can buy only <%=c.product.quentity%> items of this product.</p>
+      </div>
+      <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
+        <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
+          <h6><strong class="price"><%=c.product.price%></strong><span class="text-muted">x</span></h6>
+        </div>
+        <input id="productId" name="productId" class="productId" type="hidden" value="<%=c.product.id%>" >
+        <div class="quantity">
+          <input type="number" step="1" max="5" min="1" value="<%=c.quentity%>" style="width:50px;" title="Qty" class="qty">
+        </div>
+        <div class="col-4 col-sm-4 col-md-4">
+          <div >
+            <%q=(c.quentity * c.product.price)%>
+            <label class="totalPrice"><%=q%></label>
+          </div>
+        </div>
+        <!-- :location=>'client/deleteCart?cartId='c.id -->
+        <div class="col-2 col-sm-2 col-md-2 text-right">
+          <%= button_to 'Delete',client_deleteCart_path(:id=>c) , data: { confirm: 'Are you sure?'},:class => 'btn btn-outline-danger btn-xs' %>
+          <!-- <button type="button" class="btn btn-outline-danger btn-xs">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button> -->
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <%end%>
+    <!-- END PRODUCT -->
+
+  </div>
+  <div class="card-footer">
+    <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
+    <!-- <div class="row">
+      <div class="col-6">
+        <input type="text" class="form-control" placeholder="cupone code">
+      </div>
+      <div class="col-6">
+        <input type="submit" class="btn btn-default" value="Use cupone">
+      </div>
+    </div> -->
+  </div>
+  <div class="pull-right" style="margin: 10px">
+    <a href="checkout" class="btn btn-success pull-right">Checkout</a>
+    <div class="pull-right" style="margin: 5px">
+      Total price: <b id="mailTotal"></b>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+
+<script>
+ $(document).ready(function () {
+   getTotal();
+   $('.qty').on('change', function() {
+    var quentity = $(".qty").val();
+    var productId = $(this).closest(".row").find(".productId").val();
+    var price = $(this).closest(".row").find("strong").text();
+    var totalPrice = quentity * price;
+    $(this).closest(".row").find(".totalPrice").text(totalPrice);
+
+    var url="/client/updateCartValue";
+    $.ajax({
+      type : "get",
+      url : url,
+      data : {"productId":productId,"quentity":quentity},
+      datatype: 'script',
+      async: false,
+      success : function(data){
+       alert("Hii");
+     }  
+   });
+
+
+    alert(productId);
+    alert(quentity);
+    alert(price);
+    alert(totalPrice);
+    getTotal();
+  });
+
+ //   $(".qty").off('change').on("change",function(){
+ //    alert("hii");
+ //   //    var quentity = $(".qty").val();
+ //   //    var productId = $(this).closest(".row").find(".productId").val();
+ //   var url="/client/updateCartValue";
+ //   $.ajax({
+ //    type : "POST",
+ //    url : url,
+ //    data : {"productId":productId,"quentity":quentity},
+ //    datatype: 'script',
+ //    async: false,
+ //    success : function(data){
+ //     alert("Hii");
+ //   }
+ // });
+});
+
+
+ function getTotal(){
+  var total = 0;
+  $('.totalPrice').each(function(){
+    total += parseFloat(this.innerHTML);
+      // alert(total);
+    });
+    // console.log(total);
+    $('#mailTotal').text(total);
+  }
+
+
+</script>

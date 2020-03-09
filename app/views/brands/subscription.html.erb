@@ -1,15 +1,7 @@
 <%if current_user%>
 <%if current_user.has_role? :brand%>
 
-<% if @user.errors.any? %>
-<h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-<ul>
-  <% @user.errors.full_messages.each do |message| %>
-  <li><%= message %></li>
-  <% end %>
-</ul>
-<% end %>
 <%a=current_user.id%>
 <% @brand = Brand.joins(:user).select('users.*, brands.*').where(user_id: a) %>
 <h1>Your Subscriptions</h1>

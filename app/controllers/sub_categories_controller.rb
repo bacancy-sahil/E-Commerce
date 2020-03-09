@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# SubCategoriesController
 class SubCategoriesController < ApplicationController
 before_action :authenticate_user!
   def index

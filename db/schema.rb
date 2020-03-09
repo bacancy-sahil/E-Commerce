@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_06_055424) do
+ActiveRecord::Schema.define(version: 2020_03_08_045734) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2020_03_06_055424) do
   create_table "likes", force: :cascade do |t|
     t.integer "user_id"
     t.integer "comment_id"
-    t.boolean "likeValue", default: true
+    t.boolean "likeValue", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -109,6 +109,15 @@ ActiveRecord::Schema.define(version: 2020_03_06_055424) do
 
   create_table "news_letters", force: :cascade do |t|
     t.text "email", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "order_histories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "price"
+    t.integer "quentity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

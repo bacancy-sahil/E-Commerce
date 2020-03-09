@@ -1,3 +1,7 @@
+
+# frozen_string_literal: true
+
+# SubscriptionsController
 class SubscriptionsController < ApplicationController
 before_action :authenticate_user!
   def new

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# CategoryContoller.
 class CategoriesController < ApplicationController
 before_action :authenticate_user!
 
@@ -31,10 +34,10 @@ before_action :authenticate_user!
 
   def create
     @category = Category.new(category_params)
-    if @category.save!
+    if @category.save
       redirect_to categories_path
     else
-      redirect_to categories_path
+      render 'new'
     end
   end
 

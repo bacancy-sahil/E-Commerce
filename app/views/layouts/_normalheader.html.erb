@@ -12,13 +12,14 @@
     <% if user_signed_in? %>
     <%@category =Category.where(["status = ?" ,true]) %>
     <% for c in @category.each do%>
+ 
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"  aria-expanded="false">
         <%=c.name%></a> 
         <%@subCategory =SubCategory.where(["category_id= ? and status = ?", c.id, true]) %>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <% for s in @subCategory.each do%>
-          <a class="dropdown-item" href="/user1s/subCategory?id=<%=s.id%>"><%=s.name%></a> 
+          <a class="dropdown-item" href="/client/subCategory?id=<%=s.id%>"><%=s.name%></a> 
           <div class="dropdown-divider"></div>
           <%end%>
         </div>

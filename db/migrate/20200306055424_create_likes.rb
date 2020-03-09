@@ -3,7 +3,7 @@ class CreateLikes < ActiveRecord::Migration[6.0]
     create_table :likes do |t|
       t.integer :user_id
       t.integer :comment_id
-      t.boolean :likeValue , default: true
+      t.boolean :likeValue , default: false
       t.timestamps
     end
   end
