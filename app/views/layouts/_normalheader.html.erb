@@ -12,7 +12,7 @@
     <% if user_signed_in? %>
     <%@category =Category.where(["status = ?" ,true]) %>
     <% for c in @category.each do%>
- 
+
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"  aria-expanded="false">
         <%=c.name%></a> 
@@ -25,22 +25,28 @@
         </div>
       </li>
       <%end%>
-    <% end %>
+      <% end %>
       <li class="nav-item active">
        <%if user_signed_in? %>
-       <li class="nav-item">
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"  aria-expanded="false">User Settings</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <%= link_to('Profile', client_profile_path) %>
+          <div class="dropdown-divider"></div>
+          <%= link_to "Pending Payments", charges_path, :method => :post %>
+          <div class="dropdown-divider"></div>
+        </div>
       </li>
-       <%= button_to('Logout', destroy_user_session_path, method: :delete,:class=>"btn btn-danger btn-sm pull-right") %>
-       
-       <%else%>
-       <%= link_to('Log-In', user_session_path,:class=>"btn btn-success btn-sm pull-right") %> 
-       <%end%>
-     </li>
-   </ul>
- 
-    <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search" style="width: 276px;">
-    <button class="btn btn-outline-success my-2 my-sm-0 searchbutton" type="submit">Search</button>
+      <%= button_to('Logout', destroy_user_session_path, method: :delete,:class=>"btn btn-danger btn-sm pull-right") %>
+
+      <%else%>
+      <%= link_to('Log-In', user_session_path,:class=>"btn btn-success btn-sm pull-right") %> 
+      <%end%>
+    </li>
+  </ul>
+
+  <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search" style="width: 276px;">
+  <button class="btn btn-outline-success my-2 my-sm-0 searchbutton" type="submit">Search</button>
 </div>
 </nav>
 
@@ -54,13 +60,13 @@
   $("#search").on('keyup',function(){
    var data = $('#search').val();
 
-    var url="/client/search";
-    $.ajax({
-      type : "get",
-      url : url,
-      data : {"data":data}
-   });
+   var url="/client/search";
+   $.ajax({
+    type : "get",
+    url : url,
+    data : {"data":data}
   });
  });
+});
 
 </script>

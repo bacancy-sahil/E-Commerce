@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :pendingpayments
   resources :orders
   resources :order_histories
   resources :likes
   resources :mappingtables
   devise_for :users
   resources :users
+  resources :charges
   get '/admins/update_order_status'
+  get '/client/filterdatabyCat'
   get '/client/filterdata'
   get '/brands/dashboard'
   get '/admins/index'

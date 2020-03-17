@@ -26,7 +26,7 @@ class AdminsController < ApplicationController
     @order = Order.where(["status= ?", true])
     # NewsLetterMailer.order(@cart).deliver_now
     for o in @order.each
-      @orderHistory = OrderHistory.new
+      @orderHistory = Pendingpayment.new
       @orderHistory.name = o.product.name
       @orderHistory.description = o.product.description
       @orderHistory.price = o.product.price

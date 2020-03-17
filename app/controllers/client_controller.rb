@@ -9,6 +9,11 @@ class ClientController < ApplicationController
     @brand = @user.build_brand
   end
 
+  def filterdatabyCat
+    category=params[:catValue].to_i
+    @product=Product.where("name LIKE :name1 AND category_id = :catid",{:name1 => "#{params[:catInput]}%", :catid => category})
+  end
+
   def filterdata
     data=params[:filter]
     if data=='Sorting A to Z'
@@ -110,6 +115,8 @@ class ClientController < ApplicationController
     @product = Product.where(status: true)
     @products = Product.order("created_at DESC").take(3)
   end
+
+
 
   def deleteCart
     @cart = Cart.find(params[:id])

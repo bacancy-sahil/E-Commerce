@@ -1,6 +1,11 @@
 <div class=" row container">
+
+  <%=select_tag(:category_id, options_from_collection_for_select(@category, :id, :name), {:prompt => 'Select Category'}) %>
+  <input id="catInput" type="text" placeholder="Search Product..">
+
+
  <%= select_tag(:status,options_for_select([['Sorting'],['Sorting A to Z'],['Sorting Z to A'],['Sorting Price High to Low'],['Sorting Price Low to High']]), { style:'
-    margin-left: 525px;' })%>
+    margin-left: 50px;' })%>
 <input id="myInput" type="text" placeholder="Search Product.." style="margin-left: 20px;">
 </div>
 <div class="container">
@@ -69,12 +74,37 @@
       });
     });
 
+    $('#catInput').on('keyup',function(){
+      var catValue = $("#category_id").val();
+      // alert(catValue);
+      var catInput = $("#catInput").val();
+      // alert(catInput);
+      if ($.isNumeric(catValue)){
+      var url="/client/filterdatabyCat";
+      $.ajax({
+        headers: {
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        type : "get",
+        url : url,
+        data : {catValue:catValue,catInput:catInput}
+      });
+    }
+    else
+    {
+      alert("Select any category");
+    }
+  });
+
+
     $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#container .grid-item").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+
+
 
 
    $("#subscribe").on("click",function(){
