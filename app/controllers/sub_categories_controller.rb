@@ -2,26 +2,29 @@
 
 # SubCategoriesController
 class SubCategoriesController < ApplicationController
-before_action :authenticate_user!
+  before_action :authenticate_user!
   def index
     @subCategory = SubCategory.all
   end
 
   def new
     @category = Category.all
-    @subCategory =SubCategory.new
+    @subCategory = SubCategory.new
   end
 
   def create
     @subCategory = SubCategory.new(subcat_params)
-    status=params[:sub_category][:status]
+    status = params[:sub_category][:status]
     params[:status] = status.to_i
-    a=params[:category_id]
+    a = params[:category_id]
     @subCategory.category_id = a
-    @subCategory.save!
-    redirect_to sub_categories_path
+    if @subCategory.save
+      redirect_to sub_categories_path
+    else
+      render 'new'
+    end
   end
-  
+
   def edit
     @subCategory = SubCategory.find(params[:id])
   end
@@ -31,16 +34,17 @@ before_action :authenticate_user!
   end
 
   def update
-   
-
     @subCategory = SubCategory.find(params[:id])
-    status=params[:sub_category][:status]
+    status = params[:sub_category][:status]
     params[:status] = status.to_i
-    a=params[:category_id]
+    a = params[:category_id]
     # binding.pry
     @subCategory.category_id = a
-    @subCategory.update(subcat_params)
-    redirect_to sub_categories_path
+    if @subCategory.update(subcat_params)
+      redirect_to sub_categories_path
+    else
+      render 'new'
+    end
   end
 
   def destroy
@@ -50,7 +54,6 @@ before_action :authenticate_user!
   end
 
   def subcat_params
-    params.require(:sub_category).permit(:category_id,:name,:status)
+    params.require(:sub_category).permit(:category_id, :name, :status)
   end
-
 end

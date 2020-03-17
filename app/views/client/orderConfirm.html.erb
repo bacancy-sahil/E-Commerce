@@ -15,30 +15,28 @@
     </div>
     <div class="card-body">
       <!-- PRODUCT -->
-      <%for c in @cart.each do%>
+      <%for order in @order.each do%>
       <div class="row">
         <div classs="col-12 col-sm-12 col-md-2 text-center">
-         <%= image_tag(c.product.image1,:class=>'img-responsive',height: '80', width: '120') if c.product.image1.attached?%>
-
-
+         <%= image_tag(order.product.image1,:class=>'img-responsive',height: '80', width: '120') if order.product.image1.attached?%>
        </div>
        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
-        <a href="/client/product?id=<%=c.product.id%>" style="color: black;text-decoration: none;"><h4 class="product-name"><strong><%=c.product.name%></strong></h4>
+        <a href="/client/product?id=<%=order.product.id%>" style="color: black;text-decoration: none;"><h4 class="product-name"><strong><%=order.product.name%></strong></h4>
         <h4></a>
-          <small><%=c.product.description%></small>
+          <small><%=order.product.description%></small>
         </h4>
       </div>
       <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
         <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
-          <h6><strong class="price"><%=c.product.price%></strong><span class="text-muted">x</span></h6>
+          <h6><strong class="price"><%=order.product.price%></strong><span class="text-muted">x</span></h6>
         </div>
-        <input id="productId" name="productId" class="productId" type="hidden" value="<%=c.product.id%>" >
+        <input id="productId" name="productId" class="productId" type="hidden" value="<%=order.product.id%>" >
         <div class="quantity">
-          <label><%=c.quentity%></label>
+          <label><%=order.quantity%></label>
         </div>
         <div class="col-4 col-sm-4 col-md-4">
           <div >
-            <%q=(c.quentity * c.product.price)%>
+            <%q=(order.quantity * order.product.price)%>
             <label class="totalPrice"><%=q%></label>
           </div>
         </div>

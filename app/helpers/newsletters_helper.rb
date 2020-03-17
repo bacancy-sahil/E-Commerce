@@ -1,5 +1,4 @@
 # frozen_string_literal: true
 
-# AreasHelper
-module AreasHelper
+module NewslettersHelper
 end

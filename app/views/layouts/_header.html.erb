@@ -8,7 +8,7 @@
     <ul class="list-unstyled components">
       <p>Dummy Heading</p>
       <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Index</a>
+        <a href="/admins/index"  aria-expanded="false">Index</a>
 
       </li> 
 
@@ -41,8 +41,6 @@
       <li>
         <a href="/products">View Products</a>
       </li>
-
-      
       <li>
         <a href="#subscriptions" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Subscriptions</a>
         <ul class="collapse list-unstyled" id="subscriptions">
@@ -54,8 +52,10 @@
           </li>
         </ul>
       </li>
-
-      <li>
+       <li>
+        <a href="/brands">View Brands</a>
+      </li>
+     <!--  <li>
         <a href="#brand" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Brands</a>
         <ul class="collapse list-unstyled" id="brand">
           <li>
@@ -65,12 +65,15 @@
             <a href="/brands">View Brands</a>
           </li>
         </ul>
+      </li> -->
+      <li>
+        <a href="/newsletters/send">News-Letter</a>
       </li>
       <li>
-        <a href="/news_letters/new">News-Letter</a>
+        <a href="/admins/approval">Order Approval Status</a>
       </li>
 
-      <li>
+    <!--   <li>
         <a href="#State" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">State</a>
         <ul class="collapse list-unstyled" id="State">
           <li>
@@ -104,7 +107,7 @@
             <a href="#">Manage Area</a>
           </li>
         </ul>
-      </li>
+      </li> -->
     </nav>
 
     <!-- Page Content  -->
@@ -136,11 +139,11 @@
                 <a class="nav-link" href=""><%=current_user.email%></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Page</a>
+                  <%= link_to('Profile', client_profile_path) %>
               </li>
-              <li class="nav-item">
+            <!--   <li class="nav-item">
                 <a class="nav-link" href="#">Page</a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>

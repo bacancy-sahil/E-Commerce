@@ -9,6 +9,8 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :sub_category
   belongs_to :brand
-  has_one :comment
-  has_one :mappingtable
+  has_one :comment, dependent: :destroy
+  has_one :mappingtable, dependent: :destroy
+  scope :search, ->(query) { where(['name LIKE ?', "%#{query}%"]) }
+  has_many :orders
 end

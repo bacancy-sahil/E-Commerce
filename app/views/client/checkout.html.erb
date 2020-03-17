@@ -4,9 +4,7 @@
 <script src="https://use.fontawesome.com/c560c025cf.js"></script>
 <div class="container">
 
-  <% flash.each do |key, value| %>
-  <div class="alert alert-<%= key %> text-danger"><%= value %></div>
-  <% end %>
+  
   <div class="card shopping-cart">
     <div class="card-header bg-dark text-light">
       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -74,7 +72,7 @@
 <div class="container my-4">
  <div class="border border-light p-3 mb-4">
     <div class="text-center">
-       <a href="/client/orderHistory" class="btn btn-success pull-right">Your Orders</a>
+       <a href="/client/orderHistory" class="btn btn-success">Your Orders</a>
     
     </div>
   </div>
@@ -85,7 +83,7 @@
 
 
 <script>
- $(document).ready(function () {
+ $(document).load(function () {
   // alert("i am called1");
   getTotal();
 
@@ -99,8 +97,8 @@
 });
 
 
- setTimeout(function(){
-  var url="/client/orderHistorys";
+
+  var url="/client/orderConfirm";
   $.ajax({
     type : "get",
     url : url,
@@ -112,8 +110,6 @@
     }  
   });
 
-
-},3000);
 
 
 </script>

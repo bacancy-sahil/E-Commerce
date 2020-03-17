@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class CreateLikes < ActiveRecord::Migration[6.0]
   def change
     create_table :likes do |t|
       t.integer :user_id
       t.integer :comment_id
-      t.boolean :likeValue , default: false
+      t.boolean :likeValue, default: false
       t.timestamps
     end
   end

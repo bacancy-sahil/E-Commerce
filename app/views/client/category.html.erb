@@ -1,3 +1,5 @@
+<input id="myInput" type="text" placeholder="Search Product.." style="margin-left: 800px;">
+
 <div class="container">
   <div style=" display: grid; grid-template-columns: auto auto auto;padding: 10px;">
     <%for p in @product.each do%>
@@ -29,3 +31,15 @@
     <%end%>
   </div>
 </div>
+
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $(".container .grid-item").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

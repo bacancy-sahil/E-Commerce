@@ -1,7 +1,6 @@
 <%if current_user%>
 <%if current_user.has_role? :admin%>
 
-<p id="notice"><%= notice %></p>
 
 <h1> All Category</h1>
 <table class="table table-dark" style="text-align: center;">
@@ -32,6 +31,8 @@
 <br>
 
 <%= link_to 'Add Category', new_category_path ,:class =>'btn btn btn-success' %>
+  
+
 <%end%>
 <%else%>  
 <%=render file: 'public/404'%>

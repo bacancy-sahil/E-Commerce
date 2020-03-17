@@ -2,6 +2,7 @@
 
 <div class="super_container">
   <%p=@product%>
+  <% @pid= @product.id%>
   <div class="single_product">
     <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
       <div class="row">
@@ -56,78 +57,12 @@
                  <%else%>
                  <div class="center"><a href="/users/sign_in" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
                  <%end%>
-                 <div class="container">
-                   <br/>
-                   <h4>All Comments</h4>
-                   <%if user_signed_in?%>
-                   <%c = current_user.comment%> 
-                   <%if c.present?%>
-                   <%c = current_user.comment%>
-                   <div class="row collapse" id="demo1">
-                    <h6 class="form-group col-sm-4">Update Comment :</h6>
-                    <%=text_area(:description, :text1 ) %>
 
-                    <input id="cartId" name="cartId" class="cartId" type="hidden" value="<%=c.id%>" >
-                    <%= link_to('Update Comments',"",:class=>" btn btn-success btn-sm text-center sanket",:style=>"margin-left: 200px;")%>
-                  </div>
+                  <%=render "productlike" %>
 
 
-                  <%else%>
-                  <div class="row sahil">
-                    <h6 class="form-group col-sm-4">Add Your Comment :</h6>
-                    <%=text_area(:description, :text ) %>
-                    <input id="id" name="id" class="id" type="hidden" value="<%=@product.id%>" >
-                    <input id="customerId" name="customerId" class="customerId" type="hidden" value="<%=current_user.id%>" >
-                    <%if user_signed_in?%>
-                    <%= link_to('Create Comments',"",:class=>"comment btn btn-success btn-sm pull-right")%>
 
-                    <%else%>
 
-                    login
-
-                    <%end%>
-                    <%end%>
-                    <%end%>
-                    <%@comment = Comment.where(:product_id=>@product.id)%>
-                    <% @comment.each do |c|%>
-                    <%if user_signed_in?%>
-                    <%if c.user_id==current_user.id%>
-                    <div class="co">
-                      <input id="commentId" name="commentId" class="commentId" type="hidden" value="<%=c.id%>" >
-                      <div class="float-right delete"><a href="" class="btn btn-danger">Delete</a></div>
-                      <div class="float-right edit"><a href="" class="btn btn-primary" data-toggle="collapse" data-target="#demo1">Edit</a></div>
-                      <%end%>
-                      <%end%>
-                      <div class="container rounded border-primary border la">
-                        <div class="row"><i class="fa fa-user" aria-hidden="true" style="padding-left: 25px;padding-right: 30px;"></i><%=c.user.email%>
-                          <input id="commentId" name="commentId" class="commentId" type="hidden" value="<%=c.id%>" >
-
-                          <input id="userId" name="userId" class="userId" type="hidden" value="<%=c.user.id%>" >
-                        </div>
-                        <div class="row description"><i class="fa fa-comments" aria-hidden="true" style="padding-left: 25px;padding-right: 30px;"></i><%=c.description%></div>
-                        <%if user_signed_in?%>
-                        <%cu=current_user.id%>
-                        <%cm=c.id%>
-                        <input id="id" name="id" class="id" type="hidden" value="<%=@product.id%>" >
-                        <input id="currentUserId" name="currentUserId" class="currentUserId" type="hidden" value="<%=current_user.id%>" >
-                        <% a=Like.where(comment_id:cm,likeValue:true).count %>
-                        <% if Like.exists?(user_id:cu,comment_id:cm,likeValue: true) %>
-                        <button class="likes2" style="font-size:15px;padding: 0;border: none;
-                        background: none;"> <i class="fa fa-heart" style="font-size:24px;color:red;"></i><%=a%></button>
-                        <%elsif Like.exists?(user_id:cu,comment_id:cm,likeValue: false)%>
-                        <button class="likes1" style="font-size:15px;padding: 0;border: none;
-                        background: none;"> <i class="fa fa-heart-o not_liked" style="font-size:24px;color:red;"></i><%=a%></button>          
-                        <%else%> 
-                        <button class="likes1" style="font-size:15px;padding: 0;border: none;
-                        background: none;"> <i class="fa fa-heart-o not_liked" style="font-size:24px;color:red;"></i><%=a%></button>    
-                        <%end%>           
-                        <%end%> 
-                      </div>
-                      
-                      <%end%>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -175,33 +110,46 @@
    $(document).ready(function () {
 
      $('.likes1').on('click', function() {
+
       var button=$(this); 
+      var productId = $("#id").val();
       var currentUserId = $(this).closest(".la").find(".currentUserId").val();
+      var likes2 = $(this).closest(".la").find(".likes2");
       var commentId= $(this).closest(".la").find(".commentId").val();
-      alert(commentId);
-      alert(currentUserId);
       var url="/client/updateLike";
+      // alert(productId);
       $.ajax({
         headers: {
           'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
         },
         type : "post",
         url : url,
-        data : {"commentId":commentId,"userId":currentUserId},
-        datatype: 'script',
-        async: false,
-        success : function(data){
-          if (data['data'] == 'true') {
-            button.find(".not_liked").removeClass('fa fa-heart-o');
-            button.find(".not_liked").addClass('fa fa-heart');
-          }
-        }  
+        data : {"commentId":commentId,"userId":currentUserId,"id":productId}
+       //  datatype: 'script',
+       //  async: false,
+       //  success : function(data){
+       //    if (data['data'] == 'true') {
+       //     likes2.removeClass("collapse");
+       //     a = button.text();
+       //     an = parseInt(a);
+       //     ans = an+1;
+       //     likes2.html('<i class="fa fa-heart"></i>');
+       //     likes2.text(ans);
+       //     alert(a);
+       //     button.hide();
+
+       // /*     button.find(".not_liked").removeClass('fa fa-heart-o');
+       // button.find(".not_liked").addClass('fa fa-heart');*/
+       //    }
+        }); 
       });
-    });
+  
 
      $('.likes2').on('click', function() {
       var button=$(this); 
+      var productId = $("#id").val();
       var currentUserId = $(this).closest(".la").find(".currentUserId").val();
+      // var likes1 = $(this).closest(".la").find(".likes1");
       var commentId= $(this).closest(".la").find(".commentId").val();
       var url="/client/updateLike";
       $.ajax({ headers: {
@@ -209,15 +157,23 @@
       },
       type : "post",
       url : url,
-      data : {"commentId":commentId,"userId":currentUserId},
-      datatype: 'script',
-      async: false,
-      success : function(data){
-        console.log(data);
-        button.find(".not_liked").removeClass('fa fa-heart-o');
-        button.find(".not_liked").addClass('fa fa-heart');
-      }  
-    });
+      data : {"commentId":commentId,"userId":currentUserId,"id":productId}
+      // datatype: 'script',
+      // async: false,
+      // success : function(data){
+      //   debugger;
+      //   likes1.html('<i class="fa fa-heart-o"></i>');
+      //   button.hide();
+      //   likes1.removeClass("collapse");
+   
+      //   a = button.text();
+      //   an = parseInt(a);
+      //   ans = an-1;
+      //   alert(ans);
+    /*    button.find(".not_liked").removeClass('fa fa-heart-o');
+    button.find(".not_liked").addClass('fa fa-heart');*/
+        // }  
+      });
     });
 
 
@@ -227,8 +183,6 @@
       var productId = $("#id").val();
     // alert("I am Called");
     var value = $('#description_text').val();
-    
-
 
     var url="/client/addComment";
     $.ajax({
@@ -270,17 +224,9 @@
 
      $('.sanket').on('click', function() {
       // alert("I am calledsss");
-      var commentId = $(this).closest("#demo1").find(".cartId").val();
-
-
-    // var customerId = $("#customerId").val();
-    // var productId = $("#productId").val();
-    // // alert("I am Called");
+    var commentId = $(this).closest("#demo1").find(".editcommentId").val();
     var value = $('#description_text1').val();
-    
-    // alert(value);
-    // alert(commentId);
-
+    alert(value);
     var url="/client/updateComment";
     $.ajax({
       type : "get",
@@ -291,7 +237,6 @@
       success : function(data){
        $("#demo1").hide();
        $(".sahil").hide();
-
        $(this).closest(".co").find(".description").text(value);
 
      }  
@@ -299,18 +244,12 @@
   });
 
      $('.edit').on('click', function() {
-    // alert("I am called");
     var comment = $(this).closest(".co").find(".description").text();
-     // alert(comment);
+    var commentId = $(this).closest(".co").find(".commentId").val();
+     alert(commentId);
+     var editCommentId =$("#editcommentId").val(commentId);
      $("#description_text1").text(comment);
-
-
    });
-
-
-
-
-
    });
 
 

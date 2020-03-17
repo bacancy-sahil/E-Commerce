@@ -1,8 +1,6 @@
 <%if current_user%>
 <%if current_user.has_role? :admin%>
 
-<p id="notice"><%= notice %></p>
-
 <h1> All Subscriptions</h1>
 <table class="table table-dark" style="text-align: center;">
   <thead>
@@ -38,6 +36,7 @@
 
 <%= link_to 'New Subscription', new_subscription_path ,:class =>'btn btn btn-success'%>
 
+ 
 <%end%>
 <%else%>  
 <%=render file: 'public/404'%>
