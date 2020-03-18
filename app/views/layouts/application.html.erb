@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>E-Commerce</title>
   <%= csrf_meta_tags %>
@@ -9,41 +10,39 @@
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
   <%= stylesheet_link_tag "custom" %>
-  
   <%= stylesheet_link_tag "custom" %>
 </head>
 
 <body>
   <section class="section">
     <div class="content">
-      <%if user_signed_in?%>
-     
-      <%if current_user.has_role? :admin%>
-      <%=render "layouts/header"%>
-      <%elsif current_user.has_role? :brand%>
-      <%=render "layouts/brandheader"%>
-      <%else current_user.has_role? :user%>
-      <%=render "layouts/normalheader"%>
-      <%end%>
-      <%else%>
+      <% if user_signed_in? %>
+      <% if current_user.has_role? :admin %>
+      <%= render "layouts/header" %>
+      <% elsif current_user.has_role? :brand %>
+      <%= render "layouts/brandheader" %>
+      <% else current_user.has_role? :user %>
+      <%= render "layouts/normalheader" %>
+      <% end %>
+      <% else %>
       <%= render "layouts/normalheader"%>
-      <%end%>
-      <%= yield %>  
+      <% end %>
+      <%= yield %>
     </div>
-  </div>
-</div>
-</section>
-
-<script>
- function myFunction() {
-  // alert("Hi");
-  var x = document.getElementById("sidebar");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-} 
-</script>
+    </div>
+    </div>
+  </section>
+  <script>
+    function myFunction() {
+      // alert("Hi");
+      var x = document.getElementById("sidebar");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
 </body>
+
 </html>

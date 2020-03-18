@@ -4,12 +4,10 @@
   <strong>Description:</strong>
   <%= @subscription.description %>
 </p>
-
 <p>
   <strong>Price:</strong>
   <%= @subscription.price %>
 </p>
-
 <p>
   <strong>Number Of Products:</strong>
   <%= @subscription.numberofproducts   %>
@@ -24,14 +22,12 @@
     <%= form_tag do |form|%>
     <%= check_box_tag(:status, @subscription.status,@subscription.status) %>
     <%= label_tag(:status) %>
-    <%end%>
+    <% end %>
   </div>
 </p>
-
 <%= link_to 'Edit', edit_subscription_path(@subscription) %> ||
 <%= link_to 'Back', subscriptions_path %>
-
-<%end%>
-<%else%>  
-<%=render file: 'public/404'%>
-<%end%>
+<% end %>
+<% else %>
+<%= render file: 'public/404' %>
+<% end %>

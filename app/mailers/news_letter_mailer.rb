@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# NewsLetterMailer
 class NewsLetterMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -19,9 +20,7 @@ class NewsLetterMailer < ApplicationMailer
   end
 
   # def order(cart)
-  #   binding.pry
   #   @cart = cart
-  #   binding.pry
   #   mail to: cart.user.email, subject: "Your Orders"
   # end
 
