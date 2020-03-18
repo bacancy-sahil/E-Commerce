@@ -5,14 +5,14 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @product = Product.all
+    @products = Product.all
   end
 
   def get_sub_category
     a = params[:categoryId]
     @subCategory = SubCategory.find_by(category_id: a)
     render json: {
-      result: @subCategory
+      result: @subCategory,
     }
   end
 

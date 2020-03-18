@@ -14,10 +14,12 @@ class User < ApplicationRecord
   has_one :mappingtable, dependent: :destroy
   accepts_nested_attributes_for :brand
   after_create :create_account
+
   def create_account
     @user = User.last
     @user.add_role :user
   end
+
   has_one :order
   # validates :email, presence: true, length: { in: 2..20 }
   # validates :encrypted_password, presence: true, length: { in: 2..20 }

@@ -2,7 +2,7 @@
 
 # BrandContoller.
 class BrandsController < ApplicationController
-  before_action :authenticate_user!, except: [:new, :create, :done]
+  before_action :authenticate_user!, except: %i[new create done]
 
   def new
     @user = User.new
@@ -17,18 +17,17 @@ class BrandsController < ApplicationController
 
   def update
     @brand = Brand.find(params[:id])
-
-    if (params[:brand][:status] == "1" and params[:brand][:startingdate] == nil)
-      d = DateTime.now
-      @brand.startingdate = d.strftime("%Y-%m-%d %H:%M:%S")
+    if (params[:brand][:status] == "1") && params[:brand][:startingdate].nil?
+      date = DateTime.now
+      @brand.startingdate = date.strftime("%Y-%m-%d %H:%M:%S")
       duration = @brand.subscription.duration
-      addMonths = d + duration.months
+      addMonths = date + duration.months
       @brand.endingdate = addMonths.strftime("%Y-%m-%d %H:%M:%S")
       @brand.user.remove_role :user
       @brand.user.has_role? :brand
       NewsLetterMailer.sendCongratulations(@brand).deliver_now
     end
-    if (params[:brand][:status] == "0")
+    if params[:brand][:status] == "0"
       @brand.startingdate = nil
       @brand.endingdate = nil
     end
@@ -39,15 +38,14 @@ class BrandsController < ApplicationController
     end
   end
 
-  def done
-  end
+  def done; end
 
   def status
-    @brand = Brand.where(status: 0)
+    @brands = Brand.where(status: 0)
   end
 
   def index
-    @brand = Brand.all
+    @brands = Brand.all
   end
 
   def show
@@ -62,7 +60,6 @@ class BrandsController < ApplicationController
     @brand = Brand.find(params[:id])
     @brand.destroy
     NewsLetterMailer.sendDelete(@brand).deliver_now
-
     redirect_to brands_path
   end
 
@@ -71,6 +68,6 @@ class BrandsController < ApplicationController
   end
 
   def subscription
-    @brand = Brand.joins(:user).select("users.*, brands.*")
+    @brands = Brand.joins(:user).select("users.*, brands.*")
   end
 end

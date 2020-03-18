@@ -2,27 +2,29 @@
 
 # CategoryContoller.
 class CategoriesController < ApplicationController
-before_action :authenticate_user!
+  before_action :authenticate_user!
+  before_action :set_category, only: %i[show edit update destroy]
+
+  def set_category
+    @category = Category.find(params[:id])
+  end
 
   def index
-    @category = Category.all
+    @categories = Category.all
   end
 
   def new
     @category = Category.new
   end
 
-  def edit
-    @category = Category.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @category = Category.find(params[:id])
-      if @category.update(category_params)
-        redirect_to categories_path
-      else
-        render 'edit'
-      end
+    if @category.update(category_params)
+      redirect_to categories_path
+    else
+      render "edit"
+    end
   end
 
   def create
@@ -30,23 +32,17 @@ before_action :authenticate_user!
     if @category.save
       redirect_to categories_path
     else
-      render 'new'
+      render "new"
     end
   end
 
   def destroy
-    @category = Category.find(params[:id])
-    if @category.destroy
-      redirect_to categories_path
-    end
+    redirect_to categories_path if @category.destroy
   end
 
-  def show
-    @category = Category.find(params[:id])
-  end
+  def show; end
 
   def category_params
     params.require(:category).permit(:name, :status)
   end
 end
-1

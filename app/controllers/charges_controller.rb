@@ -1,39 +1,35 @@
-class ChargesController < ApplicationController
+# frozen_string_literal: true
 
-  def new 
-    @data = Pendingpayment.where('user_id=?',current_user.id).sum(:price)
+class ChargesController < ApplicationController
+  def new
+    @data = Pendingpayment.where("user_id=?", current_user.id).sum(:price)
   end
 
   def create
-    @data = Pendingpayment.where('user_id=?',current_user.id).sum(:price)
-    # Amount in cents
+    @data = Pendingpayment.where("user_id=?", current_user.id).sum(:price)
     @amount = @data
-
-    customer = Stripe::Customer.create({
+    customer = Stripe::Customer.create(
       email: params[:stripeEmail],
       source: params[:stripeToken],
-    })
-
-    charge = Stripe::Charge.create({
+    )
+    charge = Stripe::Charge.create(
       customer: customer.id,
       amount: @data,
-      description: 'Rails Stripe customer',
-      currency: 'inr',
-    })
-
-    @order = Pendingpayment.where('user_id=?',current_user.id)
-    for o in @order.each
+      description: "Rails Stripe customer",
+      currency: "inr",
+    )
+    @orders = Pendingpayment.where("user_id=?", current_user.id)
+    for order in @orders.each
       @orderHistory = OrderHistory.new
-      @orderHistory.name = o.name
-      @orderHistory.description = o.description
-      @orderHistory.price = o.price
-      @orderHistory.quentity = o.quentity
-      @orderHistory.user_id = o.user_id
+      @orderHistory.name = order.name
+      @orderHistory.description = order.description
+      @orderHistory.price = order.price
+      @orderHistory.quentity = order.quentity
+      @orderHistory.user_id = order.user_id
       @orderHistory.save
       @pendingpayment = Pendingpayment.find(o.id)
       @pendingpayment.delete
     end
-
   rescue Stripe::CardError => e
     flash[:error] = e.message
     redirect_to new_charge_path

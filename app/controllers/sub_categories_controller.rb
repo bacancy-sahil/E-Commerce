@@ -3,6 +3,7 @@
 # SubCategoriesController
 class SubCategoriesController < ApplicationController
   before_action :authenticate_user!
+
   def index
     @subCategory = SubCategory.all
   end
@@ -38,7 +39,6 @@ class SubCategoriesController < ApplicationController
     status = params[:sub_category][:status]
     params[:status] = status.to_i
     a = params[:category_id]
-    # binding.pry
     @subCategory.category_id = a
     if @subCategory.update(subcat_params)
       redirect_to sub_categories_path

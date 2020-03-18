@@ -11,52 +11,43 @@
     </div>
     <div class="card-body">
       <!-- PRODUCT -->
-      <%total=0%>
-      <%for o in @order.each do%>
+      <% total=0 %>
+      <% for order in @order.each do %>
       <div class="row">
-       <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
-        <h4 class="product-name"><strong><%=o.name%></strong></h4>
-        <h4>
-          <small><%=o.description%></small>
-        </h4>
-      </div>
-      <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
-        <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
-          <h6><strong class="price"><%=o.price%></strong><span class="text-muted">x</span></h6>
+        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
+          <h4 class="product-name"><strong><%= order.name %></strong></h4>
+          <h4>
+            <small><%= order.description %></small>
+          </h4>
         </div>
-       
-        <div class="quantity">
-          <label><%=o.quentity%></label>
-        </div>
-        <div class="col-4 col-sm-4 col-md-4">
-          <div >
-            <%q=(o.quentity * o.price)%>
-            <label class="totalPrice"><%=q%></label>
-            <% total = total + q %>
+        <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
+          <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
+            <h6><strong class="price"><%= order.price %></strong><span class="text-muted">x</span></h6>
+          </div>
+          <div class="quantity">
+            <label><%= order.quentity %></label>
+          </div>
+          <div class="col-4 col-sm-4 col-md-4">
+            <div>
+              <% totalprice=(order.quentity * order.price) %>
+              <label class="totalPrice"><%= totalprice %></label>
+              <% total = total + totalprice %>
+            </div>
           </div>
         </div>
-        <!-- :location=>'client/deleteCart?cartId='c.id -->
-      
-        </div>
       </div>
-    <%end%>
+      <% end %>
     </div>
     <hr>
-
-    <!-- END PRODUCT -->
-
   </div>
   <div class="card-footer">
     <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
-  </div>
-  <div class="pull-center" style="margin: 10px">
-    <div class="pull-center" style="margin: 5px">
-      Total Order Price: <b id="mailTotal"><%=total%></b>
+    </div>
+    <div class="pull-center" style="margin: 10px">
+      <div class="pull-center" style="margin: 5px">
+        Total Order Price: <b id="mailTotal"><%= total %></b>
+      </div>
     </div>
   </div>
 </div>
 </div>
-</div>
-
-
-
