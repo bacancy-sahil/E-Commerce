@@ -1,0 +1,2 @@
+class Pendingpayment < ApplicationRecord
+end

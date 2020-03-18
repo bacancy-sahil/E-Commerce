@@ -1,17 +1,24 @@
+
+# frozen_string_literal: true
+
+# SubscriptionsController
 class SubscriptionsController < ApplicationController
-before_action :authenticate_user!
+  before_action :authenticate_user!
   def new
-    @subscription = Subscription.new    
+    @subscription = Subscription.new
   end
 
   def index
-    @subscription = Subscription.all    
+    @subscription = Subscription.all
   end
 
   def create
     @subscription = Subscription.new(subscription_params)
-    @subscription.save!
-    redirect_to subscriptions_path
+    if @subscription.save
+      redirect_to subscriptions_path
+    else
+      render 'new'
+    end
   end
 
   def find
@@ -29,8 +36,11 @@ before_action :authenticate_user!
 
   def update
     @subscription = Subscription.find(params[:id])
-    @subscription.update!(subscription_params)
-    redirect_to subscriptions_path
+    if @subscription.update(subscription_params)
+      redirect_to subscriptions_path
+    else
+      render 'edit'
+    end
   end
 
   def destroy
@@ -41,7 +51,6 @@ before_action :authenticate_user!
   end
 
   def subscription_params
-    params.require(:subscription).permit(:description,:price,:status,:numberofproducts,:duration)
+    params.require(:subscription).permit(:description, :price, :status, :numberofproducts, :duration)
   end
-
 end

@@ -1,0 +1,23 @@
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<%= javascript_include_tag "chartkick" %>
+<div class="container row">
+<div class="container col-md-6 row">
+  <h4> Product bought : </h4>
+    <%= pie_chart OrderHistory.group(:name).count %>
+</div>
+
+<div class="container col-md-6 row">
+  <h4> Product Available : </h4>
+    <%= pie_chart Product.pluck(:name,:quentity) %>
+</div>
+</div>
+
+<div class="container row">
+<div class="container">
+  <h4> Per day User Login : </h4>
+    <%= line_chart  User.group('DATE(created_at)').count %>
+</div>
+
+
+</div>
+

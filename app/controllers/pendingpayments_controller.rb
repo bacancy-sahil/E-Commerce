@@ -1,0 +1,2 @@
+class PendingpaymentsController < ApplicationController
+end

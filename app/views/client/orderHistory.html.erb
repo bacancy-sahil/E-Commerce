@@ -1,0 +1,62 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://use.fontawesome.com/c560c025cf.js"></script>
+<div class="container">
+  <div class="card shopping-cart">
+    <div class="card-header bg-dark text-light">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      Your Past Orders
+      <div class="clearfix"></div>
+    </div>
+    <div class="card-body">
+      <!-- PRODUCT -->
+      <%total=0%>
+      <%for o in @order.each do%>
+      <div class="row">
+       <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
+        <h4 class="product-name"><strong><%=o.name%></strong></h4>
+        <h4>
+          <small><%=o.description%></small>
+        </h4>
+      </div>
+      <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
+        <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
+          <h6><strong class="price"><%=o.price%></strong><span class="text-muted">x</span></h6>
+        </div>
+       
+        <div class="quantity">
+          <label><%=o.quentity%></label>
+        </div>
+        <div class="col-4 col-sm-4 col-md-4">
+          <div >
+            <%q=(o.quentity * o.price)%>
+            <label class="totalPrice"><%=q%></label>
+            <% total = total + q %>
+          </div>
+        </div>
+        <!-- :location=>'client/deleteCart?cartId='c.id -->
+      
+        </div>
+      </div>
+    <%end%>
+    </div>
+    <hr>
+
+    <!-- END PRODUCT -->
+
+  </div>
+  <div class="card-footer">
+    <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
+  </div>
+  <div class="pull-center" style="margin: 10px">
+    <div class="pull-center" style="margin: 5px">
+      Total Order Price: <b id="mailTotal"><%=total%></b>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+

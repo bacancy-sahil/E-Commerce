@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# CategoryContoller.
 class CategoriesController < ApplicationController
 before_action :authenticate_user!
 
@@ -15,26 +18,19 @@ before_action :authenticate_user!
 
   def update
     @category = Category.find(params[:id])
-    respond_to do |format|
       if @category.update(category_params)
-        format.html { redirect_to @category, notice: "User was successfully updated." }
+        redirect_to categories_path
       else
-        format.html { render :edit }
+        render 'edit'
       end
-    end
-    # if @category.update(category_params)
-    # 	redirect_to @category
-    # else
-    # 	redirect_to new_category_path
-    # end
   end
 
   def create
     @category = Category.new(category_params)
-    if @category.save!
+    if @category.save
       redirect_to categories_path
     else
-      redirect_to categories_path
+      render 'new'
     end
   end
 
@@ -53,3 +49,4 @@ before_action :authenticate_user!
     params.require(:category).permit(:name, :status)
   end
 end
+1

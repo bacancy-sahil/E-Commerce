@@ -1,9 +1,16 @@
-<%if current_user%>
-<%if current_user.has_role? :admin%>
 
+<div class="container">
 
-<%= form_with model: @user do |user_form| %>
-<!-- , :url => {:controller=>"users_controller",:action=>"create"}, :html => { :method => "POST" } -->
+<%= form_with model: @user, url: client_create_path, :html => {:method => :post} do |user_form| %>
+
+  <% if @user.errors.any? %>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+      <li style="color:red;"><%=message%></li>
+      <% end %>
+    </ul>
+  <% end %>     
+
 <div class="form-group row">
   <%= user_form.label :email,:class=>'col-sm-4' %>
   <%= user_form.text_field :email ,:class=>'col-sm-8'%>
@@ -13,7 +20,6 @@
   <%= user_form.label :password,:class=>'col-sm-4' %>
   <%= user_form.password_field :password ,:class=>'col-sm-8'%>
 </div>
-
 
 <%= user_form.fields_for @user.build_brand do |form| %>
 
@@ -29,14 +35,11 @@
 <div class="form-group row">
   <div class="col-sm-4"></div>
   <div class="col-sm-4">
-  <%= user_form.submit %>
+  <%= user_form.submit "Create Brnad" %>
 </div>
  <div class="col-sm-4"></div>
 </div>
 <% end %>
 
 
-<%end%>
-<%else%>  
-<%=render file: 'public/404'%>
-<%end%>
+</div>
