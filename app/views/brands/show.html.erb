@@ -1,39 +1,29 @@
-
-<%if current_user%>
-<%if current_user.has_role? :admin%>
-
-
-<p id="notice"><%= notice %></p>
-
+<% if current_user %>
+<% if current_user.has_role? :admin %>
 <p>
   <strong>Brand Name:</strong>
   <%= @brand.name %>
 </p>
-
 <p>
   <strong>Subscription:</strong>
-  <%= @brand.subscription.description%>
+  <%= @brand.subscription.description %>
 </p>
 <p>
   <strong>Staring Date:</strong>
-  <%= @brand.startingdate%>
+  <%= @brand.startingdate %>
 </p>
 <p>
   <strong>Ending Date:</strong>
-  <%= @brand.endingdate%>
+  <%= @brand.endingdate %>
 </p>
-<%if @brand.status==0 ; status="Pendding";elsif(@brand.status==1);status="running";elsif(@brand.status==2);status="DeActivated";else status="";end%>
-
+<% @brand.status == 0; status = 'Pendding'; elsif(@brand.status == 1); status = 'running';elsif(@brand.status == 2); status = 'DeActivated'; else status = ''; end %>
 <p>
   <strong>Status:</strong>
-  <%= status%>
+  <%= status %>
 </p>
-
 <%= link_to 'Edit', edit_brand_path(@brand) %> ||
 <%= link_to 'Back', brands_path %>
-
-
-<%end%>
-<%else%>  
-<%=render file: 'public/404'%>
-<%end%>
+<% end %>
+<% else %>
+<%= render file: 'public/404' %>
+<% end %>

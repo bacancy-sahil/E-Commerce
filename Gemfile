@@ -5,9 +5,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.1'
 gem 'devise'
+gem 'faraday', '= 0.15.4', require: false
 gem 'rolify'
 gem 'rubocop'
-gem 'faraday', '= 0.15.4', require: false
+gem 'stripe'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 # Use sqlite3 as the database for Active Record

@@ -5,12 +5,11 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @product = Product.all
+    @products = Product.all
   end
 
   def get_sub_category
-    a = params[:categoryId]
-    @subCategory = SubCategory.find_by(category_id: a)
+    @subCategory = SubCategory.find_by(category_id: params[:categoryId])
     render json: {
       result: @subCategory
     }
@@ -51,6 +50,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:category_id, :sub_category_id, :name, :status, :price, :description, :quentity, :image1, :image2, :image3, :brand_id)
+    params.require(:product).permit(:category_id, :sub_category_id, :name, :status, :price, :description, :quantity, :image1, :image2, :image3, :brand_id)
   end
 end

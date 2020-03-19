@@ -1,11 +1,10 @@
-<%if current_user%>
-<%if current_user.has_role? :admin%>
+<% if current_user %>
+<% if current_user.has_role? :admin %>
 <div class="container">
 <h4>Update Subscription</h4>
-<%=render "form"%>
+<%= render "form" %>
 </div>
-  
-<%end%>
-<%else%>  
-<%=render file: 'public/404'%>
-<%end%>
+<% end %>
+<% else %>
+<%= render file: 'public/404' %>
+<% end %>
