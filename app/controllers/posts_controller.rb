@@ -18,7 +18,6 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     authorize! :new, PostsController, message: 'Unable to read this article.'
-
     @post = Post.new
   end
 
@@ -29,7 +28,6 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-    # byebug
     @post.user = current_user
     respond_to do |format|
       if @post.save

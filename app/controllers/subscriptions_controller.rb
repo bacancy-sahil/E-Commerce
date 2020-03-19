@@ -1,9 +1,9 @@
-
 # frozen_string_literal: true
 
 # SubscriptionsController
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
+
   def new
     @subscription = Subscription.new
   end
@@ -17,7 +17,7 @@ class SubscriptionsController < ApplicationController
     if @subscription.save
       redirect_to subscriptions_path
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -30,7 +30,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def show
-    binding.pry
     @subscription = Subscription.find(params[:id])
   end
 
@@ -39,12 +38,11 @@ class SubscriptionsController < ApplicationController
     if @subscription.update(subscription_params)
       redirect_to subscriptions_path
     else
-      render 'edit'
+      render :edit
     end
   end
 
   def destroy
-    binding.pry
     @subscription = Subscription.find(params[:id])
     @subscription.destroy
     redirect_to subscriptions_path

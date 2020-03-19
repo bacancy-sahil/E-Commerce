@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
   create_table "carts", force: :cascade do |t|
     t.integer "user_id"
     t.integer "product_id"
-    t.integer "quentity"
+    t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -84,8 +84,8 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
 
   create_table "comments", force: :cascade do |t|
     t.text "description"
-    t.integer "product_id", null: false
-    t.integer "user_id", null: false
+    t.integer "product_id"
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_comments_on_product_id"
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
     t.text "description"
     t.integer "price"
     t.integer "user_id"
-    t.integer "quentity"
+    t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
     t.text "description"
     t.integer "price"
     t.integer "user_id"
-    t.integer "quentity"
+    t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
     t.boolean "status", default: true
     t.integer "price", null: false
     t.text "description", default: ""
-    t.integer "quentity", null: false
+    t.integer "quantity", null: false
     t.integer "category_id"
     t.integer "sub_category_id"
     t.integer "brand_id"
@@ -243,7 +243,5 @@ ActiveRecord::Schema.define(version: 2020_03_17_053313) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "brands", "subscriptions"
-  add_foreign_key "comments", "products"
-  add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
 end

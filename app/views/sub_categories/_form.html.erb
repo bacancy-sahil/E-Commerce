@@ -1,6 +1,4 @@
-
 <%= form_with(model: @subCategory, local: true) do |form| %>
-
   <% if @subCategory.errors.any? %>
     <ul>
       <% @subCategory.errors.full_messages.each do |message| %>
@@ -8,28 +6,22 @@
       <% end %>
     </ul>
   <% end %>   
-
-
 <div class="form-group row">
   <%= form.label :Category_Name ,:class=>'col-sm-4' %>  
   <%= form.select(:category_id, options_from_collection_for_select(Category.all, :id, :name), {:class=>'form-control col-sm-8', :prompt => 'Select Category'}) %>
 </div>
-
 <div class="form-group row">
   <%= form.label :name,:class=>'col-sm-4' %>
   <%= form.text_field :name,:class=>'col-sm-8' %>
 </div>
-
 <div class="form-group row">
  <%= form.label :status ,:class=>'col-sm-4' %>
  <%= form.check_box(:status, { class: 'col-sm-1' }, 1, 0)  %>
  <%#= form.check_box(:status,{},checked_value:true,:checked) %>
 </div>
-
 <div class="form-group row">
   <div class="col-sm-4"></div> 
   <div class="col-sm-4"><%= form.submit 'Add Sub-Category',:class => 'btn btn-success center'%></div>
   <div class="col-sm-4"></div> 
 </div>
-
 <% end %>
