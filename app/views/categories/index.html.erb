@@ -1,7 +1,5 @@
 <%if current_user%>
 <%if current_user.has_role? :admin%>
-
-
 <h1> All Category</h1>
 <table class="table table-dark" style="text-align: center;">
   <thead>
@@ -11,29 +9,23 @@
       <th colspan="2" scope="col"> Manage Category</th>
     </tr>
   </thead>
-
-  <tbody >
-    <% @category.each do |category| %>
+  <tbody>
+    <% @categories.each do |category| %>
     <tr>
       <td><%= category.name %></td>
-       <%if category.status==true ; status="Active";elsif(category.status==false);status="InActive";else status="";end%>
+      <%if category.status == true; status='Active'; elsif(category.status == false);status='InActive'; else status=''; end%>
       <td><%= status %></td>
-      <!-- <td><%= link_to 'Show', category_path(category)  %></td> -->
-      <td><%= link_to 'Edit', edit_category_path(category) ,:class => 'btn btn-sm btn-outline-success'%></td>
-      <td><%= button_to 'Destroy',category, method: :delete, data: { confirm: 'Are you sure?'},:class => 'btn btn-outline-danger btn-sm' %></td>
+      <td><%= link_to 'Edit', edit_category_path(category) ,class: 'btn btn-sm btn-outline-success'%></td>
+      <td>
+        <%= button_to 'Destroy',category, method: :delete, data: { confirm: 'Are you sure?'},class: 'btn btn-outline-danger btn-sm' %>
+      </td>
     </tr>
     <% end %>
   </tbody>
 </table>
-
-</table>
-
 <br>
-
-<%= link_to 'Add Category', new_category_path ,:class =>'btn btn btn-success' %>
-  
-
-<%end%>
-<%else%>  
-<%=render file: 'public/404'%>
-<%end%>
+<%= link_to 'Add Category', new_category_path ,class: 'btn btn btn-success' %>
+<% end %>
+<% else %>
+<%= render file: 'public/404' %>
+<% end %>

@@ -4,14 +4,11 @@
     <div class="sidebar-header">
       <h3>Hello admin</h3>
     </div>
-
     <ul class="list-unstyled components">
       <p>Dummy Heading</p>
       <li class="active">
-        <a href="/admins/index"  aria-expanded="false">Index</a>
-
-      </li> 
-
+        <a href="/admins/index" aria-expanded="false">Index</a>
+      </li>
       <li>
         <a href="#Category" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Category</a>
         <ul class="collapse list-unstyled" id="Category">
@@ -23,21 +20,17 @@
           </li>
         </ul>
       </li>
-
-      
-
       <li>
         <a href="#SubCategory" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sub-Category</a>
         <ul class="collapse list-unstyled" id="SubCategory">
           <li>
-            <a href=" /sub_categories/new">Add SubCategory</a>
+            <a href="/sub_categories/new">Add SubCategory</a>
           </li>
           <li>
             <a href="/sub_categories">View SubCategory</a>
           </li>
         </ul>
       </li>
-
       <li>
         <a href="/products">View Products</a>
       </li>
@@ -52,100 +45,46 @@
           </li>
         </ul>
       </li>
-       <li>
+      <li>
         <a href="/brands">View Brands</a>
       </li>
-     <!--  <li>
-        <a href="#brand" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Brands</a>
-        <ul class="collapse list-unstyled" id="brand">
-          <li>
-            <a href="/brands/new">Add Brands</a>
-          </li>
-          <li>
-            <a href="/brands">View Brands</a>
-          </li>
-        </ul>
-      </li> -->
       <li>
         <a href="/newsletters/send">News-Letter</a>
       </li>
       <li>
         <a href="/admins/approval">Order Approval Status</a>
       </li>
-
-    <!--   <li>
-        <a href="#State" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">State</a>
-        <ul class="collapse list-unstyled" id="State">
-          <li>
-            <a href="#">Add State</a>
-          </li>
-          <li>
-            <a href="#">Manage State</a>
-          </li>
-        </ul>
-      </li>
-      
-      <li>
-        <a href="#City" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">City</a>
-        <ul class="collapse list-unstyled" id="City">
-          <li>
-            <a href="#">Add City</a>
-          </li>
-          <li>
-            <a href="#">Manage City</a>
-          </li>
-        </ul>
-      </li>
-
-      <li>
-        <a href="#Area" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Area</a>
-        <ul class="collapse list-unstyled" id="Area">
-          <li>
-            <a href="#">Add Area</a>
-          </li>
-          <li>
-            <a href="#">Manage Area</a>
-          </li>
-        </ul>
-      </li> -->
-    </nav>
-
-    <!-- Page Content  -->
-    <div id="content">
-
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-
-          <button type="button" id="sidebarCollapse" class="btn btn-info" onclick="myFunction()">
-            <i class="fas fa-align-left"></i>
-            <span>Toggle Sidebar</span>
-          </button>
-          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-align-justify"></i>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav navbar-nav ml-auto">
-
-              <li class="nav-item active">
-              <%if user_signed_in? %>
-                <%= button_to('Logout', destroy_user_session_path, method: :delete) %>  
-                <%else%>
-              <%= link_to('Log-In', user_session_path) %> 
-              <%end%>
-              </li>
-        
-              <li class="nav-item">
-                <a class="nav-link" href=""><%=current_user.email%></a>
-              </li>
-              <li class="nav-item">
-                  <%= link_to('Profile', client_profile_path) %>
-              </li>
-            <!--   <li class="nav-item">
-                <a class="nav-link" href="#">Page</a>
-              </li> -->
-            </ul>
-          </div>
+  </nav>
+  <div id="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-info" onclick="myFunction()">
+          <i class="fa fa-align-left"></i>
+          <span>Toggle Sidebar</span>
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <i class="fa fa-align-justify"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item active">
+              <% if user_signed_in? %>
+              <%= button_to('Logout', destroy_user_session_path, method: :delete, 
+                :class=>"btn btn-outline-danger") %>
+              <% else %>
+              <%= link_to('Log-In', user_session_path) %>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-outline-info" href=""><%= current_user.email %></a>
+            </li>
+            <li class="nav-item">
+              <%= link_to('Profile', client_profile_path,:class=>"btn btn-outline-secondary") %>
+            </li>
+          </ul>
         </div>
-      </nav>
-
+      </div>
+    </nav>
+    

@@ -1,17 +1,16 @@
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+  id="bootstrap-css">
 
 <div class="super_container">
-  <%p=@product%>
-  <% @pid= @product.id%>
+  <% product = @product %>
+  <% @product_id= @product.id %>
   <div class="single_product">
     <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
       <div class="row">
         <div class="col-lg-1 order-lg-1 order-2">
-
         </div>
         <div class="col-lg-4 order-lg-2 order-1">
-          <div class="image_selected"> <%= image_tag(p.image1,style:"width:411px;height: 463px;padding: 25px;")%>
-
+          <div class="image_selected"> <%= image_tag(product.image1,style:"width:411px;height: 463px;padding: 25px;") %>
           </div>
         </div>
         <div class="col-lg-6 order-3">
@@ -19,241 +18,194 @@
             <nav>
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/client/category?id=<%=p.category.id%>"><%=p.category.name%></a></li>
-                <li class="breadcrumb-item"><a href="/client/subCategory?id=<%=p.sub_category_id%>"><%=p.sub_category.name%></a></li>
-                <li class="breadcrumb-item active"><%=p.name%></li>
+                <li class="breadcrumb-item"><a
+                    href="/client/category?id=<%= product.category.id %>"><%= product.category.name %></a>
+                </li>
+                <li class="breadcrumb-item"><a
+                    href="/client/subCategory?id=<%= product.sub_category_id %>"><%= product.sub_category.name %></a>
+                </li>
+                <li class="breadcrumb-item active"><%= product.name %></li>
               </ol>
             </nav>
-            <div class="product_name"><%=p.name%></div>
-
-            <div> <span class="product_price">₹ <%=p.price%></span> <strike class="product_discount"> </strike> </div>
-
+            <div class="product_name"><%= product.name %></div>
+            <div> <span class="product_price">₹ <%= product.price %></span></div>
             <hr class="singleline">
-            <div> <span class="product_info">Description : <%=p.description%><span><br> <span class="product_info">Brand :<a href="/client/brand?id=<%=p.brand.id%>"> <%=p.brand.name%><span></a><br>  </div>
-              <div>
-
-              </div>
-              <hr class="singleline">
-              <div class="order_info d-flex flex-row">
-                <form action="#">
-                </div>
-                <div class="row">
-                  <div class="col-xs-6" style="margin-left: 13px;">
-                    <div class="product_quantity">  
-                      <div class="quantity_buttons">
-                        <div id="quantity_inc_button" class="quantity_inc quantity_control"></div>
-                      </div>
-                    </div>
+            <div> <span class="product_info">Description : <%= product.description %><span><br> <span
+                    class="product_info">Brand:<a href="/client/brand?id=<%= product.brand.id %>">
+                      <%= product.brand.name %><span></a><br> </div>
+            <div>
+            </div>
+            <hr class="singleline">
+            <div class="order_info d-flex flex-row">
+              <form action="#">
+            </div>
+            <div class="row">
+              <div class="col-xs-6" style="margin-left: 13px;">
+                <div class="product_quantity">
+                  <div class="quantity_buttons">
+                    <div id="quantity_inc_button" class="quantity_inc quantity_control"></div>
                   </div>
                 </div>
-                <div class="col-xs-6">   
-                 <%if user_signed_in? %>  
-                 <% @cart = Cart.where(user_id: current_user.id, product_id: p.id) %>
-                 <% if @cart.present? %>
-                 <div class="center"><a href="/client/cart" class="btn btn-primary" style="margin-left: 50px;">Go To Cart</a></div>
-                 <%else%>
-                 <div class="center"><a href="/client/AddToCart?productId=<%=p.id%>" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
-                 <%end%>
-                 <%else%>
-                 <div class="center"><a href="/users/sign_in" class="btn btn-primary" style="margin-left: 50px;">Add To Cart</a></div>
-                 <%end%>
-
-                  <%=render "productlike" %>
-
-
-
-
               </div>
+            </div>
+            <div class="col-xs-6">
+              <% if user_signed_in? %>
+              <% @cart = cart(product) %>
+              <% if @cart.present? %>
+              <div class="center"><a href="/client/cart" class="btn btn-primary" style="margin-left: 50px;">Go To
+                  Cart</a></div>
+              <% else %>
+              <div class="center"><a href="/client/AddToCart?productId=<%=product.id%>" class="btn btn-primary"
+                  style="margin-left: 50px;">Add To Cart</a></div>
+              <% end %>
+              <% else %>
+              <div class="center"><a href="/users/sign_in" class="btn btn-primary" style="margin-left: 50px;">Add To
+                  Cart</a></div>
+              <% end %>
+              <%= render "productlike" %>
             </div>
           </div>
         </div>
       </div>
-      <%if user_signed_in?%>
-      <%@products=current_user.mappingtable.product.category.products%>
-      <%if @products.present?%>
-
-      <div class="container">
-        <h4>You may Interested in</h4>
-        <div class="row">
-         <%for pro in @products.take(4) do%>
-         <%if @product.id!=pro.id%>
-         <div class="col-md-3">
+    </div>
+    <% if user_signed_in? %>
+    <% @products = mapping_products %>
+    <% if @products.present? %>
+    <div class="container">
+      <h4>You may Interested in</h4>
+      <div class="row">
+        <% @products.take(4) do |product|%>
+        <% if @product.id!=product.id %>
+        <div class="col-md-3">
           <figure class="card card-product">
-            <div class="img-wrap"><%= image_tag(pro.image1)%></div>
+            <div class="img-wrap"><%= image_tag(product.image1) %></div>
             <figcaption class="info-wrap">
-              <h4 class="title"><%=pro.name%></h4>
-              <h5 class="title"><%=pro.brand.name%></h5>     
-              <p class="desc"><%=pro.description%></p>
-
+              <h4 class="title"><%= product.name %></h4>
+              <h5 class="title"><%= product.brand.name %></h5>
+              <p class="desc"><%= product.description %></p>
               <!-- rating-wrap.// -->
             </figcaption>
             <div class="bottom-wrap">
-              <a href="" class="btn btn-sm btn-primary float-right">Order Now</a> 
+              <a href="" class="btn btn-sm btn-primary float-right">Order Now</a>
               <div class="price-wrap h5">
-                <span class="price-new"><%=pro.price%></span> 
+                <span class="price-new"><%= product.price %></span>
               </div> <!-- price-wrap.// -->
             </div> <!-- bottom-wrap.// -->
           </figure>
         </div>
-        <%end%>
-        <%end%>
+        <% end %>
+        <% end %>
       </div> <!-- row.// -->
     </div>
-    <%end%>
-    <%end%>
-  </div> 
-
-
-
-
+    <% end %>
+    <% end %>
+  </div>
   <script>
-   $(document).ready(function () {
-
-     $('.likes1').on('click', function() {
-
-      var button=$(this); 
-      var productId = $("#id").val();
-      var currentUserId = $(this).closest(".la").find(".currentUserId").val();
-      var likes2 = $(this).closest(".la").find(".likes2");
-      var commentId= $(this).closest(".la").find(".commentId").val();
-      var url="/client/updateLike";
-      // alert(productId);
-      $.ajax({
-        headers: {
-          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-        },
-        type : "post",
-        url : url,
-        data : {"commentId":commentId,"userId":currentUserId,"id":productId}
-       //  datatype: 'script',
-       //  async: false,
-       //  success : function(data){
-       //    if (data['data'] == 'true') {
-       //     likes2.removeClass("collapse");
-       //     a = button.text();
-       //     an = parseInt(a);
-       //     ans = an+1;
-       //     likes2.html('<i class="fa fa-heart"></i>');
-       //     likes2.text(ans);
-       //     alert(a);
-       //     button.hide();
-
-       // /*     button.find(".not_liked").removeClass('fa fa-heart-o');
-       // button.find(".not_liked").addClass('fa fa-heart');*/
-       //    }
-        }); 
+    $(document).ready(function () {
+      $('.likes1').on('click', function () {
+        var button = $(this);
+        var productId = $("#id").val();
+        var currentUserId = $(this).closest(".la").find(".currentUserId").val();
+        var likes2 = $(this).closest(".la").find(".likes2");
+        var commentId = $(this).closest(".la").find(".commentId").val();
+        var url = "/client/updateLike";
+        // alert(productId);
+        $.ajax({
+          headers: {
+            'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+          },
+          type: "post",
+          url: url,
+          data: {
+            "commentId": commentId,
+            "userId": currentUserId,
+            "id": productId
+          }
+        });
       });
-  
-
-     $('.likes2').on('click', function() {
-      var button=$(this); 
-      var productId = $("#id").val();
-      var currentUserId = $(this).closest(".la").find(".currentUserId").val();
-      // var likes1 = $(this).closest(".la").find(".likes1");
-      var commentId= $(this).closest(".la").find(".commentId").val();
-      var url="/client/updateLike";
-      $.ajax({ headers: {
-        'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-      },
-      type : "post",
-      url : url,
-      data : {"commentId":commentId,"userId":currentUserId,"id":productId}
-      // datatype: 'script',
-      // async: false,
-      // success : function(data){
-      //   debugger;
-      //   likes1.html('<i class="fa fa-heart-o"></i>');
-      //   button.hide();
-      //   likes1.removeClass("collapse");
-   
-      //   a = button.text();
-      //   an = parseInt(a);
-      //   ans = an-1;
-      //   alert(ans);
-    /*    button.find(".not_liked").removeClass('fa fa-heart-o');
-    button.find(".not_liked").addClass('fa fa-heart');*/
-        // }  
+      $('.likes2').on('click', function () {
+        var button = $(this);
+        var productId = $("#id").val();
+        var currentUserId = $(this).closest(".la").find(".currentUserId").val();
+        var commentId = $(this).closest(".la").find(".commentId").val();
+        var url = "/client/updateLike";
+        $.ajax({
+          headers: {
+            'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+          },
+          type: "post",
+          url: url,
+          data: {
+            "commentId": commentId,
+            "userId": currentUserId,
+            "id": productId
+          }
+        });
+      });
+      $('.comment').on('click', function () {
+        var customerId = $("#customerId").val();
+        var productId = $("#id").val();
+        var value = $('#description_text').val();
+        var url = "/client/addComment";
+        $.ajax({
+          type: "get",
+          url: url,
+          data: {
+            "productId": productId,
+            "customerId": customerId,
+            "description": value
+          },
+          datatype: 'script',
+          async: false,
+          success: function (data) {
+            // alert("Hii");
+            $(".sahil").hide();
+          }
+        });
+      });
+      $('.delete').on('click', function () {
+        var commentId = $(this).closest(".co").find(".commentId").val();
+        var url = "/client/deleteComment";
+        $.ajax({
+          type: "get",
+          url: url,
+          data: {
+            "commentId": commentId
+          },
+          datatype: 'script',
+          async: false,
+          success: function (data) {
+            $(this).closest(".co").toggle();
+          }
+        });
+      });
+      $('.sanket').on('click', function () {
+        var commentId = $(this).closest("#demo1").find(".editcommentId").val();
+        var value = $('#description_text1').val();
+        alert(value);
+        var url = "/client/updateComment";
+        $.ajax({
+          type: "get",
+          url: url,
+          data: {
+            "commentId": commentId,
+            "description": value
+          },
+          datatype: 'script',
+          async: false,
+          success: function (data) {
+            $("#demo1").hide();
+            $(".sahil").hide();
+            $(this).closest(".co").find(".description").text(value);
+          }
+        });
+      });
+      $('.edit').on('click', function () {
+        var comment = $(this).closest(".co").find(".description").text();
+        var commentId = $(this).closest(".co").find(".commentId").val();
+        alert(commentId);
+        var editCommentId = $("#editcommentId").val(commentId);
+        $("#description_text1").text(comment);
       });
     });
-
-
-     $('.comment').on('click', function() {
-
-      var customerId = $("#customerId").val();
-      var productId = $("#id").val();
-    // alert("I am Called");
-    var value = $('#description_text').val();
-
-    var url="/client/addComment";
-    $.ajax({
-      type : "get",
-      url : url,
-      data : {"productId":productId,"customerId":customerId,"description":value},
-      datatype: 'script',
-      async: false,
-      success : function(data){
-       // alert("Hii");
-       $(".sahil").hide();
-     }  
-   });
-  });
-
-
-
-     $('.delete').on('click', function() {
-
-    // alert("I am called with delete");
-    var commentId = $(this).closest(".co").find(".commentId").val();
-    // alert(commentId);
-    var url="/client/deleteComment";
-    $.ajax({
-      type : "get",
-      url : url,
-      data : {"commentId":commentId},
-      datatype: 'script',
-      async: false,
-      success : function(data){
-        // alert(done);
-        $(this).closest(".co").toggle();
-       // $("#demo1").hide();
-       // $(".sahil").hide();
-     }  
-   });
-  });
-
-
-     $('.sanket').on('click', function() {
-      // alert("I am calledsss");
-    var commentId = $(this).closest("#demo1").find(".editcommentId").val();
-    var value = $('#description_text1').val();
-    alert(value);
-    var url="/client/updateComment";
-    $.ajax({
-      type : "get",
-      url : url,
-      data : {"commentId":commentId,"description":value},
-      datatype: 'script',
-      async: false,
-      success : function(data){
-       $("#demo1").hide();
-       $(".sahil").hide();
-       $(this).closest(".co").find(".description").text(value);
-
-     }  
-   });
-  });
-
-     $('.edit').on('click', function() {
-    var comment = $(this).closest(".co").find(".description").text();
-    var commentId = $(this).closest(".co").find(".commentId").val();
-     alert(commentId);
-     var editCommentId =$("#editcommentId").val(commentId);
-     $("#description_text1").text(comment);
-   });
-   });
-
-
-
-
-
- </script>
+  </script>

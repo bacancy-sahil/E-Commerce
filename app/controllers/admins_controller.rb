@@ -3,43 +3,42 @@
 # AdminContoller.
 class AdminsController < ApplicationController
   def index; end
-  
+
   def approval
-    @orders = Order.order(:user_id,:created_at)
+    @orders = Order.order(:user_id, :created_at)
   end
 
   def update_order_status
     orderId = params[:order_id]
     status = params[:status]
     user = params[:userId]
-    if status=="2"
-      @order = Order.find_by(["id = ? and user_id = ?", orderId, user]) 
-      o=Order.find(orderId)
-      quentity = o.product.quentity   
-      quentity += o.quantity
-      @product = Product.find(o.product.id)
-      @product.update(:quentity=>quentity)  
-      o.delete
-    elsif status=="1"
-    order = Order.find_by(["id = ? and user_id = ?", orderId, user]) 
-    order.update(status:status)
-    @order = Order.where(["status= ?", true])
-    # NewsLetterMailer.order(@cart).deliver_now
-    for o in @order.each
-      @orderHistory = Pendingpayment.new
-      @orderHistory.name = o.product.name
-      @orderHistory.description = o.product.description
-      @orderHistory.price = o.product.price
-      @orderHistory.quentity = o.quantity
-      @orderHistory.user_id = o.user_id
-      @orderHistory.save
-      @order = Order.find(o.id)
-      @order.delete
+    if status == '2'
+      @order = Order.find_by(['id = ? and user_id = ?', orderId, user])
+      order = Order.find(orderId)
+      quantity = order.product.quantity
+      quantity += order.quantity
+      @product = Product.find(order.product.id)
+      @product.update(quantity: quantity)
+      order.delete
+    elsif status == '1'
+      order = Order.find_by(['id = ? and user_id = ?', orderId, user])
+      order.update(status: status)
+      @orders = Order.where(['status= ?', true])
+      # NewsLetterMailer.order(@cart).deliver_now
+      @orders.each do |order|
+        @pendingpayment = Pendingpayment.new
+        @pendingpayment.name = order.product.name
+        @pendingpayment.description = order.product.description
+        @pendingpayment.price = order.product.price
+        @pendingpayment.quantity = order.quantity
+        @pendingpayment.user_id = order.user_id
+        @pendingpayment.save
+        @order = Order.find(order.id)
+        @order.delete
+      end
+      render json: {
+        data: true
+      }
     end
-    render json: {
-      data: 'true'
-    }
   end
-  end
-
 end

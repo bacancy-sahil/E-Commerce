@@ -1,54 +1,55 @@
 <div class="container">
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">User Email</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Product Price</th>
-      <th scope="col">Quentity</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%count=0%>
-    <%@orders.each do |order|%>
-    <tr class="tr">
-
-      <td><%=order.user.email%></td>
-      <td><%=order.product.name%></td>
-      <td><%=order.product.price%></td>
-      <td><%=order.quantity%></td>
-      <input type="hidden" id="orderid" name="orderid" value="<%=order.id%>">
-      <input type="hidden" id="userid" class="userid" value="<%=order.user.id%>">
-    
-      <td><%=select_tag(:status,options_for_select([['Pendding',0],['Approve',1],['Delete',2]]))%></td>
-    </tr>
-    <%end%> 
- 
-  </tbody>
-</table>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">User Email</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Product Price</th>
+        <th scope="col">Quantity</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% count = 0 %>
+      <% @orders.each do |order| %>
+      <tr class="tr">
+        <td><%= order.user.email %></td>
+        <td><%= order.product.name %></td>
+        <td><%= order.product.price %></td>
+        <td><%= order.quantity %></td>
+        <input type="hidden" id="orderid" name="orderid" value="<%= order.id %>">
+        <input type="hidden" id="userid" class="userid" value="<%= order.user.id %>">
+        <td><%= select_tag_status %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
-
 <script type="text/javascript">
-$(document).ready(function() {
-  $(".tr").on('change',function() {    
-  var td = $(this);
-  var data = td.find("#status").val();
-  var orderId=td.find("#orderid").val();
-  var userId=td.find("#userid").val();
-  alert(userId);
-  var url="/admins/update_order_status";
-    $.ajax({ 
-    headers: {
-      'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
-    },
-    type : "get",
-    url : url,
-    data : {"order_id":orderId,"status":data,"userId":userId},
-    success : function(data){
-    td.remove();
-    }  
+  $(document).ready(function () {
+    $(".tr").on('change', function () {
+      // alert('Hii');
+      var td = $(this);
+      var data = td.find("#status").val();
+      var orderId = td.find("#orderid").val();
+      var userId=td.find("#userid").val();
+       // alert(userId);
+      var url = "/admins/update_order_status";
+      $.ajax({
+        headers: {
+          'X-CSRF-Token': document.querySelector("meta[name=csrf-token]").content
+        },
+        type: "get",
+        url: url,
+        data: {
+          "order_id": orderId,
+          "status": data,
+          "userId": userId
+        },
+        success: function (data) {
+          td.remove();
+        }
+      });
+    });
   });
-});
-});
 </script>

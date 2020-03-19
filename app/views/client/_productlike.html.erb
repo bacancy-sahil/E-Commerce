@@ -1,66 +1,71 @@
-            <div class="container" id="container">
-                   <br/>
-                   <h4>All Comments</h4>
-                   <%if user_signed_in?%>
-                   <%c = current_user.comments.exists?(product_id:@pid)%> 
-                   <%if c.present?%>
-                   <div class="row collapse" id="demo1">
-                    <h6 class="form-group col-sm-4">Update Comment :</h6>
-                    <%=text_area(:description, :text1 ) %>
-                      <input id="commentId" name="commentId" class="commentId" type="hidden" value="" >
-                      
-                    <%= link_to('Update Comments',"",:class=>" btn btn-success btn-sm text-center sanket",:style=>"margin-left: 200px;")%>
-                  </div>
-                  <%else%>
-                  <div class="row sahil">
-                    <h6 class="form-group col-sm-4">Add Your Comment :</h6>
-                    <%=text_area(:description, :text ) %>
-                    <input id="id" name="id" class="id" type="hidden" value="<%=@product.id%>" >
-                    <input id="customerId" name="customerId" class="customerId" type="hidden" value="<%=current_user.id%>" >
-                    <%if user_signed_in?%>
-                    <%= link_to('Create Comments',"",:class=>"comment btn btn-success btn-sm pull-right")%>
-                    <%else%>
-                    login
-                    <%end%>
-                    <%end%>
-                    <%end%>
-                    <%@comment = Comment.where(:product_id=>@product.id)%>
-                    <% @comment.each do |c|%>
-                    <%if user_signed_in?%>
-                    <%if c.user_id==current_user.id%>
-                    <div class="co">
-                      <input id="editcommentId" name="editcommentId" 
-                      class="editcommentId" type="hidden" value="" >
-                      <div class="float-right delete"><a href="" class="btn btn-danger">Delete</a></div>
-                      <div class="float-right edit"><a href="" class="btn btn-primary" data-toggle="collapse" data-target="#demo1">Edit</a></div>
-                      <%end%>
-                      <%end%>
-                      <div class="container rounded border-primary border la">
-                        <div class="row"><i class="fa fa-user" aria-hidden="true" style="padding-left: 25px;padding-right: 30px;"></i><%=c.user.email%>
-                          <input id="commentId" name="commentId" class="commentId" type="hidden" value="<%=c.id%>" >
-
-                          <input id="userId" name="userId" class="userId" type="hidden" value="<%=c.user.id%>" >
-                        </div>
-                        <div class="row description"><i class="fa fa-comments" aria-hidden="true" style="padding-left: 25px;padding-right: 30px;"></i><%=c.description%></div>
-                        <%if user_signed_in?%>
-                        <%cu=current_user.id%>
-                        <%cm=c.id%>
-                        <input id="id" name="id" class="id" type="hidden" value="<%=@product.id%>" >
-                        <input id="currentUserId" name="currentUserId" class="currentUserId" type="hidden" value="<%=current_user.id%>" >
-                        <% a=Like.where(comment_id:cm,likeValue:true).count %>
-                        <% if Like.exists?(user_id:cu,comment_id:cm,likeValue: true) %>
-                        <button class="likes2" style="font-size:15px;padding: 0;border: none;
-                        background: none;"> <i class="fa fa-heart" style="font-size:24px;color:red;"></i><%=a%></button>
-                        <%elsif Like.exists?(user_id:cu,comment_id:cm,likeValue: false)%>
-                        <button class="likes1" style="font-size:15px;padding: 0;border: none;
-                        background: none;"> <i class="fa fa-heart-o" style="font-size:24px;color:red;"></i><%=a%></button>     
-                        <%else%> 
-                        <button class="likes1" style="font-size:15px;padding: 0;border: none;
-                        background: none;"><i class="fa fa-heart-o" style="font-size:24px;color:red;"></i><%=a%></button> 
-                        <%end%>           
-                        <%end%> 
-                      </div>
-                      <%end%>
-                    </div>
-                  </div>
-                </div>
+<div class="container" id="container">
+  <br />
+  <h4>All Comments</h4>
+  <% if user_signed_in? %>
+  <% comment = current_user.comments.exists?(product_id:@product_id) %>
+  <% if comment.present? %>
+  <div class="row collapse" id="demo1">
+    <h6 class="form-group col-sm-4">Update Comment :</h6>
+    <%= text_area(:description, :text1) %>
+    <input id="commentId" name="commentId" class="commentId" type="hidden" value="">
+    <%= link_to('Update Comments','',class:"btn btn-success btn-sm text-center sanket",
+    style:"margin-left: 200px;")%>
+  </div>
+  <% else %>
+  <div class="row sahil">
+    <h6 class="form-group col-sm-4">Add Your Comment :</h6>
+    <%= text_area(:description, :text) %>
+    <input id="id" name="id" class="id" type="hidden" value="<%= @product.id %>">
+    <input id="customerId" name="customerId" class="customerId" type="hidden" value="<%= current_user.id %>">
+    <% if user_signed_in? %>
+    <%= link_to('Create Comments','',:class=>"comment btn btn-success btn-sm pull-right") %>
+    <% else %>
+    login
+    <% end %>
+    <% end %>
+    <% end %>
+    <% @comments = product_base_comments(@product) %>
+    <% @comments.each do |comment| %>
+    <% if user_signed_in? %>
+    <% if comment.user_id == current_user.id %>
+    <div class="co">
+      <input id="editcommentId" name="editcommentId" class="editcommentId" type="hidden" value="">
+      <div class="float-right delete"><a href="" class="btn btn-danger">Delete</a></div>
+      <div class="float-right edit"><a href="" class="btn btn-primary" data-toggle="collapse"
+          data-target="#demo1">Edit</a></div>
+      <% end %>
+      <% end %>
+      <div class="container rounded border-primary border la">
+        <div class="row"><i class="fa fa-user" aria-hidden="true"
+            style="padding-left: 25px;padding-right: 30px;"></i><%= comment.user.email %>
+          <input id="commentId" name="commentId" class="commentId" type="hidden" value="<%= comment.id %>">
+          <input id="userId" name="userId" class="userId" type="hidden" value="<%= comment.user.id %>">
+        </div>
+        <div class="row description"><i class="fa fa-comments" aria-hidden="true"
+            style="padding-left: 25px;padding-right: 30px;"></i><%=comment.description%></div>
+        <% if user_signed_in? %>
+        <% currentuser=current_user.id %>
+        <% comments=comment.id %>
+        <input id="id" name="id" class="id" type="hidden" value="<%= @product.id %>">
+        <input id="currentUserId" name="currentUserId" class="currentUserId" type="hidden"
+          value="<%= current_user.id %>">
+        <% a = findlike(comments) %>
+        <% if like_exists(current_user, comments) %>
+        <button class="likes2" style="font-size:15px;padding: 0;border: none;
+                        background: none;"> <i class="fa fa-heart"
+            style="font-size:24px;color:red;"></i><%= a %></button>
+        <% elsif like_exists_false(current_user,comments) %>
+        <button class="likes1" style="font-size:15px;padding: 0;border: none;
+                        background: none;"> <i class="fa fa-heart-o"
+            style="font-size:24px;color:red;"></i><%= a %></button>
+        <% else %>
+        <button class="likes1" style="font-size:15px;padding: 0;border: none;
+                        background: none;"><i class="fa fa-heart-o"
+            style="font-size:24px;color:red;"></i><%= a %></button>
+        <% end %>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -3,6 +3,7 @@
 # SubCategoriesController
 class SubCategoriesController < ApplicationController
   before_action :authenticate_user!
+
   def index
     @subCategory = SubCategory.all
   end
@@ -15,13 +16,12 @@ class SubCategoriesController < ApplicationController
   def create
     @subCategory = SubCategory.new(subcat_params)
     status = params[:sub_category][:status]
-    params[:status] = status.to_i
-    a = params[:category_id]
-    @subCategory.category_id = a
+    params[:status] = status.to_i 
+    @subCategory.category_id = params[:category_id]
     if @subCategory.save
       redirect_to sub_categories_path
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -37,13 +37,11 @@ class SubCategoriesController < ApplicationController
     @subCategory = SubCategory.find(params[:id])
     status = params[:sub_category][:status]
     params[:status] = status.to_i
-    a = params[:category_id]
-    # binding.pry
-    @subCategory.category_id = a
+    @subCategory.category_id = params[:category_id]
     if @subCategory.update(subcat_params)
       redirect_to sub_categories_path
     else
-      render 'new'
+      render :new
     end
   end
 

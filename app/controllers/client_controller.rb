@@ -10,30 +10,28 @@ class ClientController < ApplicationController
   end
 
   def filterdatabyCat
-    category=params[:catValue].to_i
-    @product=Product.where("name LIKE :name1 AND category_id = :catid",{:name1 => "#{params[:catInput]}%", :catid => category})
+    category = params[:catValue].to_i
+    @products = Product.where('name LIKE :name1 AND category_id = :catid', name1: '#{params[:catInput]}%', catid: category)
   end
 
   def filterdata
-    data=params[:filter]
-    if data=='Sorting A to Z'
-      @product = Product.order(name: :asc)
-    elsif data=='Sorting Z to A'
-      @product = Product.order(name: :desc)
-    elsif data=='Sorting Price High to Low'
-      @product = Product.order(price: :desc)
-    elsif data=='Sorting Price Low to High'
-      @product = Product.order(price: :asc)
-    else
-      @product = Product.all
-    end
+    data = params[:filter]
+    case data  
+      when(data = "Sorting A to Z")
+        @products = Product.order(name: :asc)
+      when(data = "Sorting Z to A")
+        @products = Product.order(name: :desc)
+      when(data = "Sorting Price High to Low")
+        @products = Product.order(price: :desc)
+      when(data = "Sorting Price Low to High")
+        @products = Product.order(price: :asc)
+      else
+        @products = Product.all
+      end
   end
 
   def search
-    data = params[:data]
-    @product = Product.search(data)
-    # @category = Category.where(status: true)
-    # @products = Product.order("created_at DESC").take(3)
+    @products = Product.search(params[:data])
   end
 
   def create
@@ -48,35 +46,29 @@ class ClientController < ApplicationController
       @brand.save
       redirect_to brands_done_path
     else
-      render "/brands/new"
+      render '/brands/new'
     end
   end
 
   def category
-    @product = Product.where(category_id: params[:id])
+    @products = Product.where(category_id: params[:id])
   end
 
   def addComment
-    product_id = params[:productId]
-    user_id = params[:customerId]
-    description = params[:description]
     Comment.create(product_id: params[:productId], user_id: params[:customerId], description: params[:description])
   end
 
   def subCategory
-    subCategoryId = params[:id]
-    @product = Product.where(sub_category_id: subCategoryId)
+    @products = Product.where(sub_category_id: params[:id])
   end
 
   def updateComment
-    c = Comment.find(params[:commentId])
-    c.update(description: params[:description])
-    binding.pry
+    comment = Comment.find(params[:commentId])
+    comment.update(description: params[:description])
   end
 
   def brand
-    brandId = params[:id]
-    @product = Product.where(brand_id: brandId)
+    @products = Product.where(brand_id: params[:id])
   end
 
   def product
@@ -93,141 +85,126 @@ class ClientController < ApplicationController
   end
 
   def AddToCart
-    productId = params[:productId]
     @cart = Cart.new
     @cart.user_id = current_user.id
     @cart.product_id = params[:productId]
-    @cart.quentity = 1
+    @cart.quantity = 1
     @cart.save
-    redirect_to action: "cart"
+    redirect_to action: :cart
   end
 
   def cart
-    @cart = Cart.where(["user_id= ?", current_user.id])
+    @carts = Cart.where(['user_id= ?', current_user.id])
   end
 
   def orderConfirm
-    @cart = Cart.where(["user_id= ?", current_user.id])
+    @carts = Cart.where(['user_id= ?', current_user.id])
   end
 
   def home
     @category = Category.where(status: true)
-    @product = Product.where(status: true)
-    @products = Product.order("created_at DESC").take(3)
+    @products = Product.where(status: true)
+    @products_order = Product.order('created_at DESC').take(3)
   end
-
-
 
   def deleteCart
     @cart = Cart.find(params[:id])
     @cart.delete
-    redirect_to action: "cart"
+    redirect_to action: :cart
   end
 
   def checkout
-    @cart = Cart.where(user_id: current_user.id)
-    for c in @cart.each
-      productQuentity = c.product.quentity
-      productName = c.product.name
-      cartQuentity = c.quentity
-      if productQuentity > 0
-        if productQuentity >= cartQuentity
+    @carts = Cart.where(user_id: current_user.id)
+    for cart in @carts.each
+      productQuantity = cart.product.quantity
+      productName = cart.product.name
+      cartQuantity = cart.quantity
+      if productQuantity > 0
+        if productQuantity >= cartQuantity
         else
-          flash[:notice] = "You can add only " + productQuentity.to_s + " Quentity of this " + productName + "."
+          flash[:notice] = 'You can add only ' + productQuantity.to_s + ' Quantity of this ' + productName + '.'
           return redirect_to client_cart_path
         end
       else
-        flash[:notice] = "Product " + productName + " out of stock."
+        flash[:notice] = 'Product ' + productName + ' out of stock.'
         return redirect_to client_cart_path
       end
     end
-    for c in @cart.each
-      productQuentity = c.product.quentity
-      productName = c.product.name
-      cartQuentity = c.quentity
-      a = productQuentity - cartQuentity
-      c.product.update(quentity: a)
+    @carts.each do |cart|
+      productQuantity = cart.product.quantity
+      productName = cart.product.name
+      cartQuantity = cart.quantity
+      a = productQuantity - cartQuantity
+      cart.product.update(quantity: a)
     end
-    @order = Cart.where(["user_id= ?", current_user.id])
-    order()
+    @order = Cart.where(['user_id= ?', current_user.id])
+    order
   end
 
   def updateCartValue
-    productId = params[:productId]
-    quentity = params[:quentity]
-    Cart.where(user_id: current_user.id, product_id: productId).update(quentity: quentity)
-    puts "done"
+    Cart.where(user_id: current_user.id, product_id: params[:productId]).update(quantity: params[:quantity])
   end
 
   def order
-    @cart = Cart.where(["user_id= ?", current_user.id])
-    # NewsLetterMailer.order(@cart).deliver_now
-    d=DateTime.now
-    dates=d.strftime("%Y-%m-%d %H:%M")
-    for c in @cart.each
+    @carts = Cart.where(user: :current_user)
+    date = DateTime.now
+    dates = date.strftime('%Y-%m-%d %H:%M')
+    @carts.each do |cart|
       @order = Order.new
-      @order.product_id = c.product_id
-      @order.user_id = c.user_id
-      @order.quantity = c.quentity
+      @order.product_id = cart.product_id
+      @order.user_id = cart.user_id
+      @order.quantity = cart.quantity
       @order.created_at = dates
       @order.save
-      @cart1 = Cart.find(c.id)
-      @cart1.delete
+      cart.delete
     end
   end
 
   def orderHistorys
-    @order = Order.where(["status= ?", true])
-    # NewsLetterMailer.order(@cart).deliver_now
-    for o in @order.each
+    @orders = Order.where(status: true)
+    @orders.each do |order|
       @orderHistory = OrderHistory.new
-      @orderHistory.name = o.product.name
-      @orderHistory.description = o.product.description
-      @orderHistory.price = o.product.price
-      @orderHistory.quantity = o.quentity
-      @orderHistory.quantity = o.user_id
+      @orderHistory.name = order.product.name
+      @orderHistory.description = order.product.description
+      @orderHistory.price = order.product.price
+      @orderHistory.quantity = order.quantity
+      @orderHistory.quantity = order.user_id
       @orderHistory.save
-      @order = Orer.find(o.id)
-      @order.delete
+      order.delete
     end
   end
 
   def orderHistory
-    @order = OrderHistory.where(user_id:current_user.id)
+    @order = OrderHistory.where(user_id: current_user.id)
   end
 
   def orderConfirm
-    @cart = Cart.where(["user_id= ?", current_user.id]) 
-    for c in @cart.each
+    @carts = Cart.where(['user_id= ?', current_user.id])
+    @carts.each do |cart|
       @order = Order.new
-      @order.product_id = c.product_id
-      @order.user_id = c.user_id
-      @order.quantity = c.quentity
+      @order.product_id = cart.product_id
+      @order.user_id = cart.user_id
+      @order.quantity = cart.quantity
       @order.save
-      @cart1 = Cart.find(c.id)
-      @cart1.delete
+      cart.delete
     end
-    @order = Order.where(["user_id= ?", current_user.id])
+    @order = Order.where(['user_id= ?', current_user.id])
   end
 
   def deleteComment
-    comment = params[:commentId]
-    Comment.delete(comment)
-    # Like.delete.where(comment_id: comment)
+    Comment.delete(params[:commentId])
   end
 
-  def updateLike
-    commentId = params[:commentId]
-    userId = params[:userId]
-    if Like.exists?(comment_id: commentId, user_id: userId)
-      like = Like.find_by(comment_id: commentId, user_id: userId)
+  def updateLike 
+    if Like.exists?(comment_id: params[:commentId], user_id: params[:userId])
+      like = Like.find_by(comment_id: params[:commentId], user_id: params[:userId])
       if like.likeValue
-        like.update(likeValue: false)
+        like.update( likeValue: false )
       else
-        like.update(likeValue: true)
+        like.update( likeValue: true )
       end
     else
-      Like.create(comment_id: commentId, user_id: userId, likeValue: false)
+      Like.create(comment_id: params[:commentId], user_id: params[:userId], likeValue: false)
     end
     # product Page code
     @product = Product.find(params[:id])
