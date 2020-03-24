@@ -11,6 +11,6 @@ module ApplicationHelper
   end
 
   def brand_timing
-    (current_user.brand.startingdate..current_user.brand.endingdate).cover?(Date.today)
+    (current_user.brand.startingdate..current_user.brand.endingdate).cover?(DateTime.now)
   end
 end

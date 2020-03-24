@@ -1,16 +1,17 @@
 <% if current_user %>
-<% if current_user.has_role? :admin %>
-  <strong>Category Name:</strong>
-<p><%= @subCategory.category.name %></p>
-  <strong>Sub-Category Name:</strong>
-<p><%= @subCategory.name %></p>
-<p>
-  <strong>Status:</strong>
-  <%= @subCategory.status%>
-</p>
-<%= link_to 'Edit', edit_category_path(@subCategory) %> ||
-<%= link_to 'Back', sub_categories_path %>
-<% end %>
-<% else %>  
-<%= render file: 'public/404' %>
+  <% if current_user.has_role? :admin %>
+    <%= render 'layouts/header' %>
+    <strong>Category Name:</strong>
+    <p><%= @subCategory.category.name %></p>
+    <strong>Sub-Category Name:</strong>
+    <p><%= @subCategory.name %></p>
+    <p>
+      <strong>Status:</strong>
+      <%= @subCategory.status%>
+    </p>
+    <%= link_to 'Edit', edit_category_path(@subCategory) %> ||
+    <%= link_to 'Back', sub_categories_path %>
+  <% end %>
+<% else %>
+  <%= render file: 'public/404' %>
 <% end %>

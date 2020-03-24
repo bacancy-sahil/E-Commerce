@@ -4,8 +4,8 @@
   <title>E-Commerce</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= stylesheet_link_tag 'application',media: 'all', 'data-turbolinks-track': 'reload'%>
-  <%= stylesheet_pack_tag 'application',media: 'all', 'data-turbolinks-track': 'reload'%>
+  <%= stylesheet_link_tag 'application',media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_pack_tag 'application',media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
   <%= stylesheet_link_tag "custom" %>
@@ -15,11 +15,7 @@
   <section class="section">
     <div class="content">
       <% if user_signed_in? %>
-        <% if current_user.has_role? :admin %>
-          <%= render "layouts/header" %>
-        <% elsif current_user.has_role? :brand %>
-          <%= render "layouts/brandheader" %>
-        <% else current_user.has_role? :user %>
+        <% if current_user.has_role? :user %>
           <%= render "layouts/normalheader" %>
         <% end %>
       <% else %>

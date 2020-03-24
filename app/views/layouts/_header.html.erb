@@ -54,37 +54,37 @@
       <li>
         <a href="/admins/approval">Order Approval Status</a>
       </li>
-  </nav>
-  <div id="content">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-info" onclick="myFunction()">
-          <i class="fa fa-align-left"></i>
-          <span>Toggle Sidebar</span>
-        </button>
-        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
-          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <i class="fa fa-align-justify"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item active">
-              <% if user_signed_in? %>
-              <%= button_to('Logout', destroy_user_session_path, method: :delete, 
-                :class=>"btn btn-outline-danger") %>
-              <% else %>
-              <%= link_to('Log-In', user_session_path) %>
-              <% end %>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn btn-outline-info" href=""><%= current_user.email %></a>
-            </li>
-            <li class="nav-item">
-              <%= link_to('Profile', client_profile_path,:class=>"btn btn-outline-secondary") %>
-            </li>
-          </ul>
-        </div>
-      </div>
     </nav>
-    
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info" onclick="myFunction()">
+            <i class="fa fa-align-left"></i>
+            <span>Toggle Sidebar</span>
+          </button>
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fa fa-align-justify"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item active">
+                <% if user_signed_in? %>
+                  <%= button_to('Logout', destroy_user_session_path, method: :delete, 
+                     class:"btn btn-outline-danger") %>
+                <% else %>
+                  <%= link_to('Log-In', user_session_path) %>
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn btn-outline-info" href=""><%= current_user.email %></a>
+              </li>
+              <li class="nav-item">
+                <%= link_to('Profile', client_profile_path, class:"btn btn-outline-secondary") %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      

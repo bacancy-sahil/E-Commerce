@@ -1,28 +1,28 @@
 <div class="container">
-  <%= form_with model: @user, url: client_create_path, html: {:method => :post} do |user_form| %>
+  <%= form_with model: @user, url: client_create_path, html: {method: :post} do |user_form| %>
   <% if @user.errors.any? %>
-  <ul>
-    <% @user.errors.full_messages.each do |message| %>
-    <li style="color:red;"><%= message %></li>
-    <% end %>
-  </ul>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+      <li style="color:red;"><%= message %></li>
+      <% end %>
+    </ul>
   <% end %>
   <div class="form-group row">
-    <%= user_form.label :email, class:'col-sm-4' %>
-    <%= user_form.text_field :email, class:'col-sm-8'%>
+    <%= user_form.label :email, class: 'col-sm-4' %>
+    <%= user_form.text_field :email, class: 'col-sm-8' %>
   </div>
   <div class="form-group row">
-    <%= user_form.label :password, class:'col-sm-4' %>
-    <%= user_form.password_field :password, class:'col-sm-8'%>
+    <%= user_form.label :password, class: 'col-sm-4' %>
+    <%= user_form.password_field :password, class: 'col-sm-8' %>
   </div>
   <%= user_form.fields_for @user.build_brand do |form| %>
   <div class="form-group row">
-    <%= form.label :Subscription_name, class:'col-sm-4'%>
-    <%= form.select(:subscription_id, options_from_collection_for_select(Subscription.all, :id, :description), {class:'form-control col-sm-8', prompt: 'Select Subscription'}) %>
+    <%= form.label :Subscription_name, class: 'col-sm-4' %>
+    <%= form.select(:subscription_id, options_from_collection_for_select( Subscription.all, :id, :description), {class: 'form-control col-sm-8', prompt: 'Select Subscription'}) %>
   </div>
   <div class="form-group row">
-    <%= form.label :brand_name, class:'col-sm-4' %>
-    <%= form.text_field :name, class:'col-sm-8'%>
+    <%= form.label :brand_name, class: 'col-sm-4' %>
+    <%= form.text_field :name, class: 'col-sm-8' %>
   </div>
   <% end %>
   <div class="form-group row">

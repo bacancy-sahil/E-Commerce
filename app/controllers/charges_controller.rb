@@ -2,11 +2,11 @@
 
 class ChargesController < ApplicationController
   def new
-    @data = Pendingpayment.where('user_id=?', current_user.id).sum(:price)
+    @data = Pendingpayment.where(user_id: current_user.id).sum(:price)
   end
 
   def create
-    @data = Pendingpayment.where('user_id=?', current_user.id).sum(:price)
+    @data = Pendingpayment.where(user_id: current_user.id).sum(:price)
     @amount = @data
     customer = Stripe::Customer.create(
       email: params[:stripeEmail],
@@ -18,7 +18,7 @@ class ChargesController < ApplicationController
       description: 'Rails Stripe customer',
       currency: 'inr'
     )
-    @orders = Pendingpayment.where('user_id = ?', current_user.id)
+    @orders = Pendingpayment.where(user_id: current_user.id)
     @orders.each do |order|
       @orderHistory = OrderHistory.new
       @orderHistory.name = order.name

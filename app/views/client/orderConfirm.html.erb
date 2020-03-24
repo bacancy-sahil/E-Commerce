@@ -10,11 +10,10 @@
       <div class="clearfix"></div>
     </div>
     <div class="card-body">
-      <!-- PRODUCT -->
       <% @orders.each do |order| %>
       <div class="row">
         <div classs="col-12 col-sm-12 col-md-2 text-center">
-          <%= image_tag(order.product.image1,:class=>'img-responsive',height: '80', width: '120') if order.product.image1.attached? %>
+          <%= image_tag(order.product.image1, class: 'img-responsive',height: '80', width: '120') if order.product.image1.attached? %>
         </div>
         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
           <a href="/client/product?id=<%= order.product.id %>" style="color: black;text-decoration: none;">
@@ -60,7 +59,7 @@
   $(document).ready(function () {
     getTotal();
     function getTotal() {
-      alert("i am called");
+      // alert("i am called");
       var total = 0;
       $('.totalPrice').each(function () {
         total += parseFloat(this.innerHTML);

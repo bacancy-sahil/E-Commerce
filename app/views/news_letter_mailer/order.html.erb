@@ -19,7 +19,7 @@
       <td><%= cart.quantity %></td>
       <td><%= cart.product.name %></td>
       <td><%= cart.product.price %></th>
-        <%val=cart.quantity * cart.product.price%>
+        <%val = cart.quantity * cart.product.price%>
         <% total = total + val %>
       <td><%= number_to_currency(val) %></td>
     </tr>
@@ -32,5 +32,4 @@
     </tfoot>
   </table>
   <hr>
-
 </article>

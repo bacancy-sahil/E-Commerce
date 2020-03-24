@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
       <% total = 0 %>
-      <% @order.each do |order| %>
+      <% @orders.each do |order| %>
       <div class="row">
         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
           <h4 class="product-name"><strong><%= order.name %></strong></h4>
@@ -48,5 +48,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>

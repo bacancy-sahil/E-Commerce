@@ -1,10 +1,11 @@
-<% if user_signed_in? %>
-<% if current_user.has_role? :admin %>
-<div class="container">
-  <h4>Add Sub-Category</h4>
-  <%= render "form" %>
-</div>
-<% end %>
+<% if current_user %>
+  <% if current_user.has_role? :admin %>
+    <%= render 'layouts/header' %>
+      <div class="container">
+        <h4>Add Sub-Category</h4>
+        <%= render 'form' %>
+      </div>
+  <% end %>
 <% else %>
-<%= render file: 'public/404' %>
+  <%= render file: 'public/404' %>
 <% end %>

@@ -13,7 +13,7 @@ class AdminsController < ApplicationController
     status = params[:status]
     user = params[:userId]
     if status == '2'
-      @order = Order.find_by(['id = ? and user_id = ?', orderId, user])
+      @order =  Order.find_by(['id = ? and user_id = ?', orderId, user])
       order = Order.find(orderId)
       quantity = order.product.quantity
       quantity += order.quantity
@@ -21,9 +21,9 @@ class AdminsController < ApplicationController
       @product.update(quantity: quantity)
       order.delete
     elsif status == '1'
-      order = Order.find_by(['id = ? and user_id = ?', orderId, user])
+      order =  Order.find_by(['id = ? and user_id = ?', orderId, user])
       order.update(status: status)
-      @orders = Order.where(['status= ?', true])
+      @orders = Order.where(status: true)
       # NewsLetterMailer.order(@cart).deliver_now
       @orders.each do |order|
         @pendingpayment = Pendingpayment.new

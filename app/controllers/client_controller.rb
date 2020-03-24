@@ -11,23 +11,22 @@ class ClientController < ApplicationController
 
   def filterdatabyCat
     category = params[:catValue].to_i
-    @products = Product.where('name LIKE :name1 AND category_id = :catid', name1: '#{params[:catInput]}%', catid: category)
+    @products = Product.where('name LIKE :name1 AND category_id = :catid',{ name1: "#{params[:catInput]}%", catid: category})
   end
 
   def filterdata
-    data = params[:filter]
-    case data  
-      when(data = "Sorting A to Z")
-        @products = Product.order(name: :asc)
-      when(data = "Sorting Z to A")
-        @products = Product.order(name: :desc)
-      when(data = "Sorting Price High to Low")
-        @products = Product.order(price: :desc)
-      when(data = "Sorting Price Low to High")
-        @products = Product.order(price: :asc)
-      else
-        @products = Product.all
-      end
+    @products = case params[:filter]  
+                  when 'Sorting A to Z'
+                    Product.order(name: :asc)
+                  when 'Sorting Z to A'
+                    Product.order(name: :desc)
+                  when 'Sorting Price High to Low'
+                    Product.order(price: :desc)
+                  when 'Sorting Price Low to High'
+                    Product.order(price: :asc)
+                  else
+                    Product.all
+                end
   end
 
   def search
@@ -64,7 +63,7 @@ class ClientController < ApplicationController
 
   def updateComment
     comment = Comment.find(params[:commentId])
-    comment.update(description: params[:description])
+    comment.update( description: params[:description])
   end
 
   def brand
@@ -94,11 +93,11 @@ class ClientController < ApplicationController
   end
 
   def cart
-    @carts = Cart.where(['user_id= ?', current_user.id])
+    @carts = Cart.where(user_id: current_user.id)
   end
 
   def orderConfirm
-    @carts = Cart.where(['user_id= ?', current_user.id])
+    @carts = Cart.where(user_id: current_user.id)
   end
 
   def home
@@ -115,7 +114,7 @@ class ClientController < ApplicationController
 
   def checkout
     @carts = Cart.where(user_id: current_user.id)
-    for cart in @carts.each
+    @carts.each do |cart|
       productQuantity = cart.product.quantity
       productName = cart.product.name
       cartQuantity = cart.quantity
@@ -134,19 +133,10 @@ class ClientController < ApplicationController
       productQuantity = cart.product.quantity
       productName = cart.product.name
       cartQuantity = cart.quantity
-      a = productQuantity - cartQuantity
-      cart.product.update(quantity: a)
+      quantity = productQuantity - cartQuantity
+      cart.product.update(quantity: quantity)
     end
-    @order = Cart.where(['user_id= ?', current_user.id])
-    order
-  end
-
-  def updateCartValue
-    Cart.where(user_id: current_user.id, product_id: params[:productId]).update(quantity: params[:quantity])
-  end
-
-  def order
-    @carts = Cart.where(user: :current_user)
+    @carts = Cart.where(['user_id= ?', current_user.id])
     date = DateTime.now
     dates = date.strftime('%Y-%m-%d %H:%M')
     @carts.each do |cart|
@@ -158,6 +148,10 @@ class ClientController < ApplicationController
       @order.save
       cart.delete
     end
+  end
+
+  def updateCartValue
+    Cart.where(user_id: current_user.id, product_id: params[:productId]).update(quantity: params[:quantity])
   end
 
   def orderHistorys
@@ -175,11 +169,11 @@ class ClientController < ApplicationController
   end
 
   def orderHistory
-    @order = OrderHistory.where(user_id: current_user.id)
+    @orders = OrderHistory.where(user_id: current_user.id)
   end
 
   def orderConfirm
-    @carts = Cart.where(['user_id= ?', current_user.id])
+    @carts = Cart.where(user_id: current_user.id)
     @carts.each do |cart|
       @order = Order.new
       @order.product_id = cart.product_id
@@ -188,7 +182,7 @@ class ClientController < ApplicationController
       @order.save
       cart.delete
     end
-    @order = Order.where(['user_id= ?', current_user.id])
+    @orders = Order.where(user_id: current_user.id)
   end
 
   def deleteComment

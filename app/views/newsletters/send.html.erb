@@ -1,51 +1,97 @@
-  <% if current_user %>
-  <% if current_user.has_role? :admin or current_user.has_role? :brand %>
-
-  <h4>Enter Your Message :</h4>
-  <div class="container">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Subject : </label>
-      <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+<% if current_user %>
+  <% if current_user.has_role? :admin %>
+    <%= render 'layouts/header' %>
+    <h4>Enter Your Message :</h4>
+    <div class="container">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Subject : </label>
+        <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+      </div>
+      <div class="form-group">
+        <label for="comment">Message:</label>
+        <textarea class="form-control" rows="5" id="message"></textarea>
+      </div>
+      <center> <button type="button" class="btn btn-success" id="send">Send</button></center>
     </div>
-    <div class="form-group">
-      <label for="comment">Message:</label>
-      <textarea class="form-control" rows="5" id="message"></textarea>
-    </div>
-    <center> <button type="button" class="btn btn-success" id="send">Send</button></center>
-  </div>
-  <script>
-    $(document).ready(function () {
-      $("#myInput").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#container .se .grid-item").filter(function () {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    <script>
+      $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#container .se .grid-item").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+        $("#send").on("click", function () {
+          var text = $("#message").val();
+          var subject = $("#subject").val();
+          if (text == "" || subject == "") {
+            alert("Enter Some Message");
+          } else {
+            var url = "/newsletters/sendmessage";
+            $.ajax({
+              type: "get",
+              url: url,
+              data: {
+                "subject": subject,
+                "message": text
+              },
+              datatype: 'script',
+              async: false,
+              success: function (data) {
+                alert("You have successfully send updates.");
+              }
+            });
+          }
         });
       });
-      $("#send").on("click", function () {
-        var text = $("#message").val();
-        var subject = $("#subject").val();
-        if (text == "" || subject == "") {
-          alert("Enter Some Message");
-        } else {
-          var url = "/newsletters/sendmessage";
-          $.ajax({
-            type: "get",
-            url: url,
-            data: {
-              "subject": subject,
-              "message": text
-            },
-            datatype: 'script',
-            async: false,
-            success: function (data) {
-              alert("You have successfully send updates.");
-            }
+    </script>
+  <%elsif current_user.has_role? :brand %>
+  <%= render "layouts/brandheader" %>
+    <h4>Enter Your Message :</h4>
+    <div class="container">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Subject : </label>
+        <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+      </div>
+      <div class="form-group">
+        <label for="comment">Message:</label>
+        <textarea class="form-control" rows="5" id="message"></textarea>
+      </div>
+      <center> <button type="button" class="btn btn-success" id="send">Send</button></center>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+          var value = $(this).val().toLowerCase();
+          $("#container .se .grid-item").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           });
-        }
+        });
+        $("#send").on("click", function () {
+          var text = $("#message").val();
+          var subject = $("#subject").val();
+          if (text == "" || subject == "") {
+            alert("Enter Some Message");
+          } else {
+            var url = "/newsletters/sendmessage";
+            $.ajax({
+              type: "get",
+              url: url,
+              data: {
+                "subject": subject,
+                "message": text
+              },
+              datatype: 'script',
+              async: false,
+              success: function (data) {
+                alert("You have successfully send updates.");
+              }
+            });
+          }
+        });
       });
-    });
-  </script>
+    </script>
   <% end %>
-  <% else %>
+<% else %>
   <%= render file: 'public/404' %>
-  <% end %>
+<% end %>
