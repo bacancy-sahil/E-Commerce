@@ -1,0 +1,11 @@
+<% if current_user %>
+  <% if current_user.has_role? :admin %>
+    <%= render 'layouts/header' %>
+    <div class="container">
+      <h4>Edit Category</h4>
+      <%= render 'form' %>
+    </div>
+  <% end %>
+<% else %>
+  <%= render file: 'public/404' %>
+<% end %>

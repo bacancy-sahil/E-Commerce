@@ -1,0 +1,97 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://use.fontawesome.com/c560c025cf.js"></script>
+<div class="container">
+  <div class="card shopping-cart">
+    <div class="card-header bg-dark text-light">
+      <i class="fa fa-shopping-cart" aria-hidden="true"></i>Shipping cart
+      <a href="/" class="btn btn-outline-info btn-sm pull-right">Continue shopping</a>
+      <div class="clearfix"></div>
+    </div>
+    <div class="card-body">
+      <% @carts.each do |cart| %>
+      <div class="row">
+        <div classs="col-12 col-sm-12 col-md-2 text-center">
+          <%= image_tag(cart.product.image1, class: 'img-responsive',height: '80', width: '120') if cart.product.image1.attached?  %>
+        </div>
+        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-5">
+          <a href="/client/product?id=<%= cart.product.id %>" style="color: black;text-decoration: none;">
+          <h4 class="product-name"><strong><%= cart.product.name %></strong></h4>
+          <h4>
+          </a>
+          <small><%= cart.product.description %></small>
+          </h4>
+          <p>You can buy only <%= cart.product.quantity %> items of this product.</p>
+        </div>
+        <div class="col-12 col-sm-12 text-sm-center col-md-5 text-md-right row">
+          <div class="col-3 col-sm-3 col-md-3 text-md-right" style="padding-top: 5px">
+            <h6><strong class="price"><%= cart.product.price %></strong><span class="text-muted">x</span></h6>
+          </div>
+          <input id="productId" name="productId" class="productId" type="hidden" value="<%= cart.product.id %>">
+          <div class="quantity">
+            <input type="number" step="1" max="<%= cart.product.quantity %>" min="1" value="<%= cart.quantity %>"
+              style="width:50px;" title="Qty" class="qty">
+          </div>
+          <div class="col-4 col-sm-4 col-md-4">
+            <div>
+              <% total = (cart.quantity * cart.product.price) %>
+              <label class="totalPrice"><%= total %></label>
+            </div>
+          </div>
+          <!-- :location=>'client/deleteCart?cartId='c.id -->
+          <div class="col-2 col-sm-2 col-md-2 text-right">
+            <%= button_to 'Delete',client_deleteCart_path( id: cart ) , data: { confirm: 'Are you sure?'}, class: 'btn btn-outline-danger btn-xs' %>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <% end %>
+    </div>
+    <div class="card-footer">
+      <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
+      </div>
+      <div class="pull-right" style="margin: 10px">
+        <a href="checkout" class="btn btn-success pull-right">Checkout</a>
+        <div class="pull-right" style="margin: 5px">
+          Total price: <b id="mailTotal"></b>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    getTotal();
+    $('.qty').on('change', function () {
+      var quentity = $(".qty").val();
+      var productId = $(this).closest(".row").find(".productId").val();
+      var price = $(this).closest(".row").find("strong").text();
+      var totalPrice = quentity * price;
+      $(this).closest(".row").find(".totalPrice").text(totalPrice);
+      var url = "/client/updateCartValue";
+      $.ajax({
+        type: "get",
+        url: url,
+        data: {
+          "productId": productId,
+          "quentity": quentity
+        },
+        datatype: 'script',
+        async: false,
+        success: function (data) {
+          // alert("Hii");
+        }
+      });
+      getTotal();
+    });
+  });
+  function getTotal() {
+    var total = 0;
+    $('.totalPrice').each(function () {
+      total += parseFloat(this.innerHTML);
+    });
+    $('#mailTotal').text(total);
+  }
+</script>

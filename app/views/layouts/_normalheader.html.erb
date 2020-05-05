@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <a class="navbar-brand" href="#"> </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" style="padding-left: 125px;">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <% if user_signed_in? %>
+        <%@category = category_status %>
+        <%  @category.each do |category| %>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+          <%=category.name%></a>
+          <%@subCategory = category.SubCategories %>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <% @subCategory.each do |subcategory|%>
+              <a class="dropdown-item" href="/client/subCategory?id=<%=subcategory.id%>"><%=subcategory.name%></a>
+              <div class="dropdown-divider"></div>
+            <% end %>
+          </div>
+          </li>
+        <% end %>
+      <% end %>
+      <li class="nav-item active">
+        <%if user_signed_in? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-expanded="false">User Settings</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <%= link_to('Profile', client_profile_path) %>
+              <div class="dropdown-divider"></div>
+              <%= link_to "Pending Payments", charges_path, :method => :post %>
+              <div class="dropdown-divider"></div>
+            </div>
+          </li>
+          <%= button_to('Logout', destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm pull-right") %>
+        <% else %>
+          <%= link_to('Log-In', user_session_path, class: "btn btn-success btn-sm pull-right") %>
+        <% end %>
+      </li>
+    </ul>
+    <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search"
+      style="width: 276px;">
+    <button class="btn btn-outline-success my-2 my-sm-0 searchbutton" type="submit">Search</button>
+  </div>
+</nav>
+<script>
+  $(document).ready(function () {
+    $("#search").on('keyup', function () {
+      var data = $('#search').val();
+      var url = "/client/search";
+      $.ajax({
+        type: "get",
+        url: url,
+        data: {
+          "data": data
+        }
+      });
+    });
+  });
+</script>

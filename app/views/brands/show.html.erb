@@ -1,0 +1,28 @@
+<% if current_user && current_user.has_role? :admin %>
+  <p>
+    <strong>Brand Name:</strong>
+    <%= @brand.name %>
+  </p>
+  <p>
+    <strong>Subscription:</strong>
+    <%= @brand.subscription.description %>
+  </p>
+  <p>
+    <strong>Staring Date:</strong>
+    <%= @brand.startingdate %>
+  </p>
+  <p>
+    <strong>Ending Date:</strong>
+    <%= @brand.endingdate %>
+  </p>
+  <% @brand.status == 0; status = 'Pending'; elsif(@brand.status == 1); status = 'running';elsif(@brand.status == 2); status = 'De-Activated'; else status = ''; end %>
+  <p>
+    <strong>Status:</strong>
+    <%= status %>
+  </p>
+  <%= link_to 'Edit', edit_brand_path(@brand) %> ||
+  <%= link_to 'Back', brands_path %>
+<% else %>
+  <%= render file: 'public/404' %>
+<% end %>
+

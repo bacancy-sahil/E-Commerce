@@ -1,0 +1,80 @@
+<% if current_user %>
+  <% if current_user.has_role? :brand %>
+  <%= render 'layouts/brandheader' %>
+    <h4>Add Products</h4>
+    <%= form_with(model: @product, local: true) do |form| %>
+      <div class="form-group row">
+        <%= form.label :Select_category_name, class: 'col-sm-4'  %>
+        <%= form.select(:category_id, options_from_collection_for_select(Category.all, :id, :name), { class: 'col-sm-8', prompt:'Select Category'}) %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :Select_Sub_Category_Name, class: 'col-sm-4' %>
+        <%= form.select(:sub_category_id, options_from_collection_for_select([], :id, :name, class: 'col-sm-8'), {prompt: 'Select Category'}) %>
+      </div>
+      <%= form.hidden_field(:brand_id, :value => current_user.brand.id) %>
+      <div class="form-group row">
+        <%= form.label :image1 , class: 'col-sm-4' %>
+        <%= form.image_tag(@product.image1,style: 'width: 400px;height: 400px', class: 'col-sm-8 ') if @product.image1.attached? %>
+        <%= form.file_field :image1 %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :image2 , class: 'col-sm-4' %>
+        <%= form.image_tag(@product.image2,style: 'width: 400px;height: 400px', class: 'col-sm-8 ') if @product.image1.attached? %>
+        <%= form.file_field :image2 %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :image3 , class: 'col-sm-4' %>
+        <%= form.image_tag(@product.image3, style: 'width: 400px;height: 400px', class: 'col-sm-8 ') if @product.image1.attached? %>
+        <%= form.file_field :image3 %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :name , class: 'col-sm-4' %>
+        <%= form.text_field :name , class: 'col-sm-8' %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :status , class: 'col-sm-4' %>
+        <%= form.check_box(:status, {class: 'col-sm-1'}, 1, 0)  %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :price , class: 'col-sm-4' %>
+        <%= form.number_field( :price, class: 'col-sm-8') %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :description , class: 'col-sm-4' %>
+        <%= form.text_area( :description, size: '50x4', class: 'col-sm-8') %>
+      </div>
+      <div class="form-group row">
+        <%= form.label :quantity , class: 'col-sm-4' %>
+        <%= form.number_field(:quantity, class: 'col-sm-8') %>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4"><%= form.submit 'Add Product', class: 'btn btn-success center' %></div>
+        <div class="col-sm-4"></div>
+      </div>
+    <% end %>
+  <script>
+    $(document).ready(function () {
+      $("#product_category_id").off('change').on("change", function () {
+        var categoryId = $(this).val();
+        var url = "/products/get_sub_category?categoryId=" + categoryId;
+        $.ajax({
+          type: "GET",
+          url: url,
+          data: {},
+          datatype: 'script',
+          async: false,
+          success: function (data) {
+            var optionString = "<option value=''>Select Sub-Category</option>";
+            optionString += "<option value='" + data.result['id'] + "'>" +
+              data.result['name'] + "</option>";
+            $("#product_sub_category_id").html(optionString);
+          }
+        });
+      });
+    });
+  </script>
+  <% end %>
+<% else %>
+  <%= render file: 'public/404' %>
+<% end %>
